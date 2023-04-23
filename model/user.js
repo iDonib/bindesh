@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const mongoose = require("mongoose");
+const UserRole = require("../constant");
 
 const userSchema = new mongoose.Schema(
   {
@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema(
     },
     userType: {
       type: String,
-      enum: ["admin", "user"],
+      enum: Object.values(UserRole),
       default: "user",
     },
     emailVerified: {
