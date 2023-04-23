@@ -6,4 +6,4 @@ userRoute.post("/register", registerUser);
 
 userRoute.post("/login", loginUser);
 
-module.exports = { registerUser };
+module.exports = userRoute;
