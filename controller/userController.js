@@ -43,4 +43,34 @@ const registerUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser };
+const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const existingUser = userModel.findOne({ email: email });
+
+    if (!existingUser) {
+      return res.status(500).json({ error: "User not found with this email!" });
+    }
+
+    // check password
+
+    const matchPassword = await bcrypt.compare(password, existingUser.password);
+    if (!matchPassword) {
+      return res.status(500).json({ error: "Invalid Credentials" });
+    }
+    const token = jwt.sign(
+      { email: existingUser.email, id: existingUser._id },
+      SECRET_JWT
+    );
+
+    res
+      .status(200)
+      .json({ message: "Login Success", user: existingUser, token: token });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Login failed" });
+  }
+};
+
+module.exports = { registerUser, loginUser };
