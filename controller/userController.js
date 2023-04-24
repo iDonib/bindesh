@@ -95,7 +95,7 @@ const registerUser = async (req, res) => {
     res.status(500).json({ error: "User registration failed!" });
   }
 };
-
+//  Login User
 const loginUser = async (req, res) => {
   await body("email").isEmail().withMessage("Invalid Email").run(req);
   await body("password")
@@ -139,4 +139,16 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser };
+// logoutUser
+const logoutUser = async (req, res) => {
+  try {
+    res.clearCookie("token");
+    res.status(200).json({ message: "Logout success" });
+  }
+  catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Logout failed" });
+  }
+};
+
+module.exports = { registerUser, loginUser, logoutUser };
