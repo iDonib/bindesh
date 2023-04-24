@@ -21,6 +21,9 @@ app.use(
 
 // Routes
 const userRoute = require("./routes/userRoute");
+const adminRoute = require("./routes/adminRoute");
+
+app.use("/api/admin", adminRoute);
 
 app.use("/api/user", userRoute);
 // Error handler
