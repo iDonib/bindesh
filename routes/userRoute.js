@@ -15,6 +15,4 @@ userRoute.post("/login", isLoggedOut, loginUser);
 // logout
 userRoute.post("/logout", isLoggedIn, logoutUser);
 
-// userRoute.get("/adminOnly", isLoggedIn, isAdmin, adminOnly);
-
 module.exports = userRoute;
