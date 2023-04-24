@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const nodemailer = require("nodemailer");
+// const nodemailer = require("nodemailer");
 
 const userModel = require("../model/user");
 
@@ -60,31 +60,6 @@ const registerUser = async (req, res) => {
 
     const token = jwt.sign({ email: email, id: newUser._id }, SECRET_JWT);
 
-    // // creating send mail function
-    // const sendVerifyEmail = async (fullName, email, userId) => {
-
-    //   try {
-    //     nodemailer.createTransport({
-    //       service: 'gmail',
-    //       auth: {
-    //         user: process.env.GMAIL_ID,
-    //         pass: process.env.GMAIL_PASS
-    //       }
-    //     })
-
-    //     const mailConfigurations = {
-    //       from: 'on.screen.keyboards@gmail.com',
-    //       to: email,
-    //       subject: "Email verification",
-    //       html: <p> 'Hi, '+fullName+, 'Please click here to <a href="http://localhost:5000/verify?id='+userId+'">Verify</a> your email. </p>
-    //     }
-
-    //     transporter.sendVerifyEmail(mailConfigurations, function(error, info))
-    //   } catch (error) {
-    //     console.log(error)
-    //   }
-    // }
-
     res.status(200).json({
       message: "User registered successfully",
       user: newUser,
@@ -130,6 +105,10 @@ const loginUser = async (req, res) => {
       SECRET_JWT
     );
 
+    // session assign
+    // req.session.user = {};
+    req.session.user = existingUser._id;
+
     res
       .status(200)
       .json({ message: "Login Success", user: existingUser, token: token });
@@ -142,10 +121,9 @@ const loginUser = async (req, res) => {
 // logoutUser
 const logoutUser = async (req, res) => {
   try {
-    res.clearCookie("token");
+    req.session.destroy();
     res.status(200).json({ message: "Logout success" });
-  }
-  catch (error) {
+  } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Logout failed" });
   }
