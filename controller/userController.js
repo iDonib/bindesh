@@ -16,8 +16,6 @@ const nodemailer = require("nodemailer");
 let transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    // user: "on.screen.keyboards@gmail.com",
-    // pass: "tjeekcazmvpewaku",
     user: process.env.EMAIL,
     pass: process.env.PASSWORD,
   },
@@ -223,4 +221,4 @@ const loginUser = async (req, res) => {
 //   }
 // };
 
-module.exports = { registerUser, loginUser, logoutUser, emailVerify };
+module.exports = { registerUser, loginUser, emailVerify };
