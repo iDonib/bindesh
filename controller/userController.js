@@ -16,8 +16,6 @@ const nodemailer = require("nodemailer");
 let transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    // user: "on.screen.keyboards@gmail.com",
-    // pass: "tjeekcazmvpewaku",
     user: process.env.EMAIL,
     pass: process.env.PASSWORD,
   },
@@ -87,7 +85,15 @@ const registerUser = async (req, res) => {
 
     try {
       // Checking for existing user
-      const existingUser = await userModel.findOne({ email: email });
+      const existingUser = await userModel.findOne({
+        email: email,
+        username: username,
+      });
+
+      if (await userModel.findOne({ username: username })) {
+        return res.status(500).json({ error: "Username already exists" });
+      }
+
       if (existingUser) {
         return res
           .status(500)
@@ -178,13 +184,21 @@ const loginUser = async (req, res) => {
       return res.status(500).json({ error: "Invalid Credentials" });
     }
     const token = jwt.sign(
-      { email: existingUser.email, id: existingUser._id },
-      SECRET_JWT
+      {
+        email: existingUser.email,
+        id: existingUser._id,
+        userType: existingUser.userType,
+        isLoggedIn: true,
+      },
+      SECRET_JWT,
+      { expiresIn: "1d" }
     );
 
-    res
-      .status(200)
-      .json({ message: "Login Success", user: existingUser, token: token });
+    res.status(200).json({
+      message: "Login Success",
+      user: existingUser,
+      token: token,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Login failed" });
@@ -192,14 +206,19 @@ const loginUser = async (req, res) => {
 };
 
 // logoutUser
-const logoutUser = async (req, res) => {
-  try {
-    res.clearCookie("token");
-    res.status(200).json({ message: "Logout success" });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Logout failed" });
-  }
-};
+// const logoutUser = async (req, res) => {
+//   try {
+//     let token = req.headers.authorization;
+//     if (token) {
+//       token = token.split(" ")[1];
+//       let user = jwt.verify(token, SECRET_JWT);
 
-module.exports = { registerUser, loginUser, logoutUser, emailVerify };
+//       res.status(200).json({ message: "Logout success", newToken: newToken });
+//     }
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ error: "Logout failed" });
+//   }
+// };
+
+module.exports = { registerUser, loginUser, emailVerify };
