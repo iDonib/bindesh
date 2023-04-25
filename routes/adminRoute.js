@@ -4,8 +4,8 @@ const session = require("express-session");
 const { adminLogin, onlyAdmin } = require("../controller/adminController");
 const { isAdmin, isLoggedOut, isLoggedIn } = require("../middleware/auth");
 
-adminRouter.post("/login", isLoggedOut, adminLogin);
+adminRouter.post("/login", adminLogin);
 
-adminRouter.get("/adminOnly", isLoggedIn, isAdmin, onlyAdmin);
+adminRouter.get("/adminOnly", isAdmin, onlyAdmin);
 
 module.exports = adminRouter;

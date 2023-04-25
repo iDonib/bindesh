@@ -1,5 +1,4 @@
 const express = require("express");
-const session = require("express-session");
 
 const app = express();
 const morgan = require("morgan");
@@ -10,15 +9,6 @@ app.use(morgan("dev"));
 require("./config/database");
 app.use(express.json());
 
-//session configuration
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-  })
-);
-
 // Routes
 const userRoute = require("./routes/userRoute");
 const adminRoute = require("./routes/adminRoute");
@@ -28,7 +18,7 @@ app.use("/api/admin", adminRoute);
 
 app.use("/api/user", userRoute);
 
-app.use("/api/feedback", feedbackRouter);
+// app.use("/api/feedback", feedbackRouter);
 // Error handler
 const port = process.env.Port || 5000;
 if (process.env.NODE.ENV !== "test")

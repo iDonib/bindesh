@@ -12,7 +12,6 @@ const adminLogin = async (req, res) => {
         if (existingUser.userType === "user") {
           return res.status(500).json({ error: "invalid credentials" });
         } else {
-          req.session.user = existingUser;
           res
             .status(200)
             .json({ message: "Admin login success", admin: existingUser });
@@ -28,7 +27,8 @@ const adminLogin = async (req, res) => {
 };
 
 const onlyAdmin = async (req, res) => {
-  res.status(200).json({ message: "Wow I am admin" });
+  console.log("I got here");
+  return res.status(200).json({ message: "Wow I am admin" });
 };
 
 module.exports = { adminLogin, onlyAdmin };

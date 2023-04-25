@@ -66,7 +66,11 @@ const registerUser = async (req, res) => {
       phoneNumber: phoneNumber,
     });
 
-    const token = jwt.sign({ email: email, id: newUser._id }, SECRET_JWT);
+    const token = jwt.sign(
+      { email: email, id: newUser._id, userType: newUser.userType },
+      SECRET_JWT,
+      { expiresIn: "1h" }
+    );
 
     res.status(200).json({
       message: "User registered successfully",
@@ -109,17 +113,21 @@ const loginUser = async (req, res) => {
       return res.status(500).json({ error: "Invalid Credentials" });
     }
     const token = jwt.sign(
-      { email: existingUser.email, id: existingUser._id },
-      SECRET_JWT
+      {
+        email: existingUser.email,
+        id: existingUser._id,
+        userType: existingUser.userType,
+        isLoggedIn: true,
+      },
+      SECRET_JWT,
+      { expiresIn: "1d" }
     );
 
-    // session assign
-    // req.session.user = {};
-    req.session.user = existingUser._id;
-
-    res
-      .status(200)
-      .json({ message: "Login Success", user: existingUser, token: token });
+    res.status(200).json({
+      message: "Login Success",
+      user: existingUser,
+      token: token,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Login failed" });
@@ -127,14 +135,19 @@ const loginUser = async (req, res) => {
 };
 
 // logoutUser
-const logoutUser = async (req, res) => {
-  try {
-    req.session.destroy();
-    res.status(200).json({ message: "Logout success" });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Logout failed" });
-  }
-};
+// const logoutUser = async (req, res) => {
+//   try {
+//     let token = req.headers.authorization;
+//     if (token) {
+//       token = token.split(" ")[1];
+//       let user = jwt.verify(token, SECRET_JWT);
 
-module.exports = { registerUser, loginUser, logoutUser };
+//       res.status(200).json({ message: "Logout success", newToken: newToken });
+//     }
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ error: "Logout failed" });
+//   }
+// };
+
+module.exports = { registerUser, loginUser };
