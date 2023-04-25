@@ -22,10 +22,13 @@ app.use(
 // Routes
 const userRoute = require("./routes/userRoute");
 const adminRoute = require("./routes/adminRoute");
+const feedbackRouter = require("./routes/feedbackRoute");
 
 app.use("/api/admin", adminRoute);
 
 app.use("/api/user", userRoute);
+
+app.use("/api/feedback", feedbackRouter);
 // Error handler
 const port = process.env.Port || 5000;
 if (process.env.NODE.ENV !== "test")
