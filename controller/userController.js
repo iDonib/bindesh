@@ -9,8 +9,6 @@ require("dotenv").config();
 
 const SECRET_JWT = process.env.SECRET_JWT;
 
-const { body, validationResult } = require("express-validator");
-
 const nodemailer = require("nodemailer");
 
 let transporter = nodemailer.createTransport({
@@ -49,29 +47,6 @@ const registerUser = async (req, res) => {
 
     user.save().then().catch();
 
-    //Validation
-    await body("fullName")
-      .notEmpty()
-      .withMessage("Full Name is required1")
-      .isLength({ min: 2 })
-      .withMessage("Name should be more than 2 characters")
-      .run(req);
-
-    await body("email")
-      .isEmail()
-      .withMessage("Please enter valid email")
-      .run(req);
-
-    await body("password")
-      .isLength({ min: 6 })
-      .withMessage("Password must be greater than 6 characters")
-      .run(req);
-
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
     //data from req
     const {
       fullName,
@@ -155,21 +130,9 @@ const emailVerify = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
-  await body("email").isEmail().withMessage("Invalid Email").run(req);
-  await body("password")
-    .notEmpty()
-    .withMessage("Password is required")
-    .run(req);
-
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-
-  const { email, password } = req.body;
-
   try {
+    const { email, password } = req.body;
+
     const existingUser = await userModel.findOne({ email: email });
 
     if (!existingUser) {

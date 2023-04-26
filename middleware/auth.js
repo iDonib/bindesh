@@ -20,26 +20,6 @@ const isLoggedIn = async (req, res, next) => {
   }
 };
 
-// const isLoggedOut = async (req, res, next) => {
-//   try {
-//     let token = req.headers.authorization;
-//     if (token) {
-//       token = token.split(" ")[1];
-//       let user = jwt.verify(token, SECRET_KEY);
-//       if (user.isLoggedIn === false) {
-//         next();
-//       } else {
-//         return res
-//           .status(500)
-//           .json({ message: "You are already logged in.. Please logout first" });
-//       }
-//     }
-//     next();
-//   } catch (error) {
-//     console.error("Something went wrong!");
-//   }
-// };
-
 const isAdmin = async (req, res, next) => {
   try {
     let token = req.headers.authorization;
