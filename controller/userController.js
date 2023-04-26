@@ -45,6 +45,8 @@ const registerUser = async (req, res) => {
       token: tempToken,
     });
 
+    user.save().then().catch();
+
     //data from req
     const {
       fullName,
