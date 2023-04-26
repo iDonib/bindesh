@@ -168,4 +168,56 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser, emailVerify };
+// forgot password
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  try {
+    const user = await userModel.findOne({ email: email });
+    if (!user) {
+      return res.status(500).json({ error: "User not found with this email" });
+    }
+    const resetToken = jwt.sign({ email: user.email }, SECRET_JWT, {
+      expiresIn: "15m",
+    });
+    const resetUrl = `http://localhost:5000/api/user/reset-password/${resetToken}`;
+
+    const mailOptions = {
+      from: "Bindesh",
+      to: "james1415161718s@gmail.com",
+      subject: "Reset your password",
+      text: `Click this link to reset your password:${resetUrl}`,
+    };
+    await transporter.sendMail(mailOptions);
+    user.resetPasswordToken = resetToken;
+    user.resetPasswordExpires = Date.now() + 900000;
+    await user.save();
+    return res.status(200).json({ message: "Reset password link sent to your email" });
+
+  } catch(error) {
+    console.error(error);
+    return res.status(500).json({ error: "Reset password failed" });
+  }
+};
+//reset password
+const resetPassword = async (req, res) => {
+  const {password,email} = req.body;
+  try{
+    const user = await userModel.findOne({email:email});
+    if(!user){
+      return res.status(500).json({error: "Invalid or expired token"});
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    user.password = hashedPassword;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+
+    return res.status(200).json({message: "Password reset success"});
+  }catch(error){
+    console.error(error);
+    return res.status(500).json({error: "Reset password failed"});
+  }
+};
+
+
+
+module.exports = { registerUser, loginUser, emailVerify, forgotPassword, resetPassword };
