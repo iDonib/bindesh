@@ -20,7 +20,7 @@ userRoute.post("/register", validateRegisterUser, registerUser);
 userRoute.post("/login", validateLoginUser, loginUser);
 
 // verify email
-userRoute.get("/verifyEmail/:token", emailVerify);
+userRoute.get("/emailVerify", emailVerify);
 
 // forgot password
 userRoute.post("/forgotPassword", forgotPassword);
