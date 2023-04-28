@@ -26,6 +26,6 @@ userRoute.get("/emailVerify", emailVerify);
 userRoute.post("/forgotPassword", forgotPassword);
 
 // reset password
-userRoute.post("/reset-password/:token", resetPassword);
+userRoute.post("/resetPassword", resetPassword);
 
 module.exports = userRoute;
