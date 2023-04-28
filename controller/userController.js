@@ -11,7 +11,6 @@ const SECRET_JWT = process.env.SECRET_JWT;
 
 const nodemailer = require("nodemailer");
 
-
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
