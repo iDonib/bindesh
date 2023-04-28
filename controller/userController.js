@@ -4,7 +4,7 @@ const crypto = require("crypto");
 
 // Model Schema
 const userModel = require("../model/user");
-const userVerfication = require("../model/userVerfication");
+
 
 require("dotenv").config();
 
