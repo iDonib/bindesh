@@ -37,13 +37,17 @@ const userSchema = new mongoose.Schema(
       required: true,
       min: 6,
     },
-    // tokenData: {
-    //   token: String,
-    //   expiresIn: Number,
-    // },
-    // expiresIn: {
-    //   type: Date,
-    // },
+
+    otp: {
+      type: String,
+      default: null,
+    },
+
+    otpExpiration: {
+      type: Date,
+      default: null,
+    },
+
     phoneNumber: {
       type: String,
       min: 8,

@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 
 // Model Schema
 const userModel = require("../model/user");
@@ -11,29 +12,30 @@ const SECRET_JWT = process.env.SECRET_JWT;
 const nodemailer = require("nodemailer");
 
 
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.PASSWORD,
+  },
+  tls: {
+    rejectUnauthorized: false,
+  },
+});
+
 // Register User
 const registerUser = async (req, res) => {
   const { fullName, username, email, userType, password, avatar, phoneNumber } =
     req.body;
   const sendVerifyEmail = async (name, email, userId) => {
     try {
-      let transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-          user: process.env.EMAIL,
-          pass: process.env.PASSWORD,
-        },
-        tls: {
-          rejectUnauthorized: false,
-        },
-      });
-     
       const mailOptions = {
         from: "Bindesh",
         to: "james1415161718s@gmail.com",
         subject: "Verify your email",
         html: `<h1>Hi ${name}</h1><br><p>Click this link to verify your email <a href="localhost:5000/api/user/emailVerify?id=${userId}">Click here</a></p>`,
       };
+
       console.log(mailOptions.html);
       await transporter.sendMail(mailOptions);
     } catch (error) {
@@ -45,7 +47,6 @@ const registerUser = async (req, res) => {
     // Checking for existing user
     const existingUser = await userModel.findOne({
       email: email,
-      username: username,
     });
 
     if (await userModel.findOne({ username: username })) {
@@ -69,10 +70,10 @@ const registerUser = async (req, res) => {
       userType: userType,
       avatar: avatar,
       phoneNumber: phoneNumber,
-      verfied: false,
     });
 
     const token = jwt.sign({ email: email, id: newUser._id }, SECRET_JWT);
+
     sendVerifyEmail(fullName, email, newUser._id);
 
     return res.status(200).json({
@@ -141,112 +142,49 @@ const loginUser = async (req, res) => {
   }
 };
 
-// // forgot password
-// const forgotPassword = async (req, res) => {
-//   const { email } = req.body;
-//   try {
-//     const user = await userModel.findOne({ email: email });
-//     if (!user) {
-//       return res.status(500).json({ error: "User not found with this email" });
-//     }
-//     const resetToken = jwt.sign({ email: user.email }, SECRET_JWT, {
-//       expiresIn: "15m",
-//     });
-//     const resetUrl = `http://localhost:5000/api/user/reset-password/${resetToken}`;
 
-//     const mailOptions = {
-//       from: "Bindesh",
-//       to: "james1415161718s@gmail.com",
-//       subject: "Reset your password",
-//       text: `Click this link to reset your password:${resetUrl}`,
-//     };
-//     await transporter.sendMail(mailOptions);
-//     user.resetPasswordToken = resetToken;
-//     user.resetPasswordExpires = Date.now() + 900000;
-//     await user.save();
-//     return res.status(200).json({ message: "Reset password link sent to your email" });
-
-//   } catch(error) {
-//     console.error(error);
-//     return res.status(500).json({ error: "Reset password failed" });
-//   }
-// };
-// //reset password
-// const resetPassword = async (req, res) => {
-//   const {password,email} = req.body;
-//   try{
-//     const user = await userModel.findOne({email:email});
-//     if(!user){
-//       return res.status(500).json({error: "Invalid or expired token"});
-//     }
-//     const hashedPassword = await bcrypt.hash(password, 10);
-//     user.password = hashedPassword;
-//     user.resetPasswordExpires = undefined;
-//     await user.save();
-
-//     return res.status(200).json({message: "Password reset success"});
-//   }catch(error){
-//     console.error(error);
-//     return res.status(500).json({error: "Reset password failed"});
-//   }
-// };
-
-
-// Generate a random 6-digit OTP
-const generateOTP = () => {
-  return Math.floor(100000 + Math.random() * 900000);
-};
 
 // forgot password
 const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
 
-    const existingUser = await userModel.findOne({ email: email });
+    const user = await userModel.findOne({ email: email });
 
-    if (!existingUser) {
+    if (!user) {
       return res.status(500).json({ error: "User not found with this email!" });
     }
 
-    const otp = generateOTP();
+    //generate otp
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
-    sendOTPEmail(email, otp);
+    //hashing otp
+    const hashedOTP = crypto.createHash("sha256").update(otp).digest("hex");
 
-    existingUser.passwordResetOTP = otp;
+    //setting expiration time for otp at 10 min
+    const otpExpiration = new Date(Date.now() + 10 * 60 * 1000);
 
-    await existingUser.save();
-
-    return res.status(200).json({ message: "OTP sent to your email" });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Forgot password failed" });
-  }
-};
-
-
-
-// Send OTP to user's email
-const sendOTPEmail = async (email, otp) => {
-  try {
-    let transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL,
-        pass: process.env.PASSWORD,
-      },
-      tls: {
-        rejectUnauthorized: false,
-      },
-    });
+    //updating model with otp
+    user.otp = hashedOTP;
+    user.otpExpiration = otpExpiration;
+    await user.save();
 
     const mailOptions = {
       from: "Bindesh",
-      to: "james1415161718s@gmail.com",
-      subject: "Reset your password",
-      html: `<h1>Your OTP is ${otp}</h1>`,
+      to: "on.screen.keyboards@gmail.com",
+      subject: "OTP for Resetting your password",
+      text: `Your OTP is: ${otp}`,
     };
 
-    await transporter.sendMail(mailOptions);
+    await transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+        return res.status(500).json({ error: "Internal server error" });
+      } else {
+        console.log("Email sent with otp: " + info.response);
+        return res.status(200).json({ message: "OTP sent to your email" });
+      }
+    });
   } catch (error) {
     console.error(error);
   }
@@ -254,32 +192,40 @@ const sendOTPEmail = async (email, otp) => {
 
 // Verify OTP and reset password
 const resetPassword = async (req, res) => {
+  const { email, newPassword, otp } = req.body;
+
   try {
-    const { email, otp, newPassword } = req.body;
-
-    const existingUser = await userModel.findOne({ email: email });
-
-    if (!existingUser) {
-      return res.status(500).json({ error: "User not found with this email!" });
+    const user = await userModel.findOne({ email: email });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
     }
 
-    if (existingUser.passwordResetOTP !== otp) {
+    //verify otp
+    const hashedOTP = crypto.createHash("sha256").update(otp).digest("hex");
+
+    if (user.otp !== hashedOTP) {
       return res.status(500).json({ error: "Invalid OTP" });
     }
 
-    // Hashing new password with salt 10
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    //updating password and clearing otp
+    user.password = await bcrypt.hash(newPassword, 10);
+    user.otp = "";
+    user.otpExpiresAt = undefined;
+    await user.save();
 
-    existingUser.password = hashedPassword;
-    existingUser.passwordResetOTP = null;
-
-    await existingUser.save();
-
-    return res.status(200).json({ message: "Password reset successful" });
+    return res.status(200).json({
+      message: "Password reset success! Please login with new password",
+    });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Password reset failed" });
+    console.error(error);
+    return res.status(500).json({ error: "Reset password failed" });
   }
 };
 
-module.exports = { registerUser, loginUser, emailVerify, forgotPassword, resetPassword };
+module.exports = {
+  registerUser,
+  loginUser,
+  emailVerify,
+  forgotPassword,
+  resetPassword,
+};

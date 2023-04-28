@@ -4,7 +4,7 @@ const {
   loginUser,
   emailVerify,
   forgotPassword,
-  resetPassword
+  resetPassword,
 } = require("../controller/userController");
 
 // const { isLoggedIn, isAdmin } = require("../middleware/auth");
