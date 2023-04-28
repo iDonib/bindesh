@@ -4,7 +4,6 @@ const crypto = require("crypto");
 
 // Model Schema
 const userModel = require("../model/user");
-const userVerfication = require("../model/userVerfication");
 
 require("dotenv").config();
 
@@ -142,13 +141,17 @@ const loginUser = async (req, res) => {
   }
 };
 
+
+
 // forgot password
 const forgotPassword = async (req, res) => {
-  const { email } = req.body;
   try {
+    const { email } = req.body;
+
     const user = await userModel.findOne({ email: email });
+
     if (!user) {
-      return res.status(500).json({ error: "User not found with this email" });
+      return res.status(500).json({ error: "User not found with this email!" });
     }
 
     //generate otp
@@ -183,10 +186,10 @@ const forgotPassword = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "Reset password failed" });
   }
 };
-//reset password
+
+// Verify OTP and reset password
 const resetPassword = async (req, res) => {
   const { email, newPassword, otp } = req.body;
 
