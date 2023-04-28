@@ -4,13 +4,13 @@ const crypto = require("crypto");
 
 // Model Schema
 const userModel = require("../model/user");
-const userVerfication = require("../model/userVerfication");
 
 require("dotenv").config();
 
 const SECRET_JWT = process.env.SECRET_JWT;
 
 const nodemailer = require("nodemailer");
+const { findByIdAndDelete } = require("../model/user");
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -49,14 +49,14 @@ const registerUser = async (req, res) => {
       email: email,
     });
 
-    if (await userModel.findOne({ username: username })) {
-      return res.status(500).json({ error: "Username already exists" });
-    }
-
     if (existingUser) {
       return res
         .status(500)
         .json({ Error: "User with this email already exists!" });
+    }
+
+    if (await userModel.findOne({ username: username })) {
+      return res.status(500).json({ error: "Username already exists" });
     }
 
     // Hashing Password with salt 10
@@ -92,13 +92,13 @@ const emailVerify = async (req, res) => {
   try {
     const user = await userModel.findOne({ _id: req.query.id });
 
-  if (!user) {
-    return res.json({ message: "User not found" });
-  }
+    if (!user) {
+      return res.json({ message: "User not found" });
+    }
 
-  if (user && user.emailVerified === true) {
-    return res.json({ message: "User already verified." });
-  }
+    if (user && user.emailVerified === true) {
+      return res.json({ message: "User already verified." });
+    }
     const updatedInfo = await userModel.updateOne(
       {
         _id: req.query.id,
@@ -227,10 +227,59 @@ const resetPassword = async (req, res) => {
   }
 };
 
+const updateUserProfileById = async (req, res) => {
+  try {
+    const { fullName, email, password, username, avatar, phoneNumber } =
+      req.body;
+
+    const user = await userModel.findByIdAndUpdate(
+      { _id: req.params.id },
+      {
+        fullName: fullName,
+        email: email,
+        password: password,
+        avatar: avatar,
+        username: username,
+        phoneNumber: phoneNumber,
+      },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    
+
+    res
+      .status(200)
+      .json({ message: "User updated successfully!", updatedInfo: user });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json("Error updating user profile");
+  }
+};
+
+const deleteUser = async (req, res) => {
+  try {
+    const user = await userModel.findByIdAndDelete(req.params.id);
+
+    if (!user) {
+      res.status(400).json({ error: "User not found" });
+    }
+
+    res.status(200).json({ message: "User deleted successfully!" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error while deleting user" });
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
   emailVerify,
   forgotPassword,
   resetPassword,
+  updateUserProfileById,
+  deleteUser,
 };

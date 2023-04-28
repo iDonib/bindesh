@@ -5,6 +5,8 @@ const {
   emailVerify,
   forgotPassword,
   resetPassword,
+  updateUserProfileById,
+  deleteUser,
 } = require("../controller/userController");
 
 // const { isLoggedIn, isAdmin } = require("../middleware/auth");
@@ -23,9 +25,14 @@ userRoute.post("/login", validateLoginUser, loginUser);
 userRoute.get("/emailVerify", emailVerify);
 
 // forgot password
-userRoute.post("/forgotPassword", forgotPassword);
+userRoute.post("/forgot-password", forgotPassword);
 
 // reset password
-userRoute.post("/resetPassword", resetPassword);
+userRoute.post("/reset-password", resetPassword);
 
+//updating user
+userRoute.put("/update-user/:id", updateUserProfileById);
+
+//delete user
+userRoute.delete("/delete-user/:id", deleteUser);
 module.exports = userRoute;
