@@ -12,11 +12,13 @@ app.use(express.json());
 // Routes
 const userRoute = require("./routes/userRoute");
 const adminRoute = require("./routes/adminRoute");
+const organizationRoute = require("./routes/organizationRoute");
 const feedbackRouter = require("./routes/feedbackRoute");
 
 app.use("/api/admin", adminRoute);
 
 app.use("/api/user", userRoute);
+app.use("/api/organization", organizationRoute);
 
 // app.use("/api/feedback", feedbackRouter);
 // Error handler

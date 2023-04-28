@@ -10,7 +10,6 @@ require("dotenv").config();
 const SECRET_JWT = process.env.SECRET_JWT;
 
 const nodemailer = require("nodemailer");
-const { findByIdAndDelete } = require("../model/user");
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -248,7 +247,6 @@ const updateUserProfileById = async (req, res) => {
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
-    
 
     res
       .status(200)
