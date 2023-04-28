@@ -89,6 +89,15 @@ const registerUser = async (req, res) => {
 // verify email
 const emailVerify = async (req, res) => {
   try {
+    const user = await userModel.findOne({ _id: req.query.id });
+
+  if (!user) {
+    return res.json({ message: "User not found" });
+  }
+
+  if (user && user.emailVerified === true) {
+    return res.json({ message: "User already verified." });
+  }
     const updatedInfo = await userModel.updateOne(
       {
         _id: req.query.id,
