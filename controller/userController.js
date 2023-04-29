@@ -92,11 +92,11 @@ const emailVerify = async (req, res) => {
     const user = await userModel.findOne({ _id: req.query.id });
 
     if (!user) {
-      return res.json({ message: "User not found" });
+      return res.status(400).json({ message: "User not found" });
     }
 
     if (user && user.emailVerified === true) {
-      return res.json({ message: "User already verified." });
+      return res.status(500).json({ message: "User already verified." });
     }
     const updatedInfo = await userModel.updateOne(
       {
@@ -231,12 +231,13 @@ const updateUserProfileById = async (req, res) => {
     const { fullName, email, password, username, avatar, phoneNumber } =
       req.body;
 
+    hashedPassword = await bcrypt.hash(password, 10);
     const user = await userModel.findByIdAndUpdate(
       { _id: req.params.id },
       {
         fullName: fullName,
         email: email,
-        password: password,
+        password: hashedPassword,
         avatar: avatar,
         username: username,
         phoneNumber: phoneNumber,
@@ -272,6 +273,19 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await userModel.find();
+    if (!users) {
+      res.status(400).json({ message: "No users found!" });
+    }
+    res.status(200).json({ users: users });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error while getting all users" });
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
@@ -280,4 +294,5 @@ module.exports = {
   resetPassword,
   updateUserProfileById,
   deleteUser,
+  getAllUsers,
 };
