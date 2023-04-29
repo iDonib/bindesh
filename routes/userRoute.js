@@ -7,6 +7,7 @@ const {
   resetPassword,
   updateUserProfileById,
   deleteUser,
+  getAllUsers,
 } = require("../controller/userController");
 
 // const { isLoggedIn, isAdmin } = require("../middleware/auth");
@@ -35,4 +36,8 @@ userRoute.put("/update-user/:id", updateUserProfileById);
 
 //delete user
 userRoute.delete("/delete-user/:id", deleteUser);
+
+// get all users
+userRoute.get("/get-all-users", getAllUsers);
+
 module.exports = userRoute;
