@@ -10,7 +10,7 @@ const {
   getAllUsers,
 } = require("../controller/userController");
 
-// const { isLoggedIn, isAdmin } = require("../middleware/auth");
+const { isLoggedIn, isAdmin } = require("../middleware/auth");
 
 const {
   validateRegisterUser,
@@ -32,7 +32,7 @@ userRoute.post("/forgot-password", forgotPassword);
 userRoute.post("/reset-password", resetPassword);
 
 //updating user
-userRoute.put("/update-user/:id", updateUserProfileById);
+userRoute.put("/update-user/", isLoggedIn, updateUserProfileById);
 
 //delete user
 userRoute.delete("/delete-user/:id", deleteUser);
