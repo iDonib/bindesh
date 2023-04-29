@@ -1,12 +1,14 @@
 // schema
 const organizationModel = require("../model/organization");
+const userModel = require("../model/user");
 // create organization
 const createOrganization = async (req, res) => {
   const { name, admin, website, phoneNumber, address } = req.body;
+  // console.log(req.user);
   try {
     const organization = new organizationModel({
       name,
-      admin,
+      admin: req.user.id,
       website,
       phoneNumber,
       address,
