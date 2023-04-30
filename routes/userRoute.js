@@ -15,6 +15,7 @@ const { isLoggedIn, isAdmin } = require("../middleware/auth");
 const {
   validateRegisterUser,
   validateLoginUser,
+  validateResetPassword,
 } = require("../validators/userValidator");
 
 const userRoute = express.Router();
@@ -123,7 +124,7 @@ userRoute.post("/forgot-password", forgotPassword);
  *         description: User with this email address not found
  *
  */
-userRoute.post("/reset-password", resetPassword);
+userRoute.post("/reset-password", validateResetPassword, resetPassword);
 
 //updating user
 /**
