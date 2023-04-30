@@ -55,7 +55,8 @@ const registerUser = async (req, res) => {
         .json({ Error: "User with this email already exists!" });
     }
 
-    if (await userModel.findOne({ username: username })) {
+    const username = await userModel.findOne({ username: username });
+    if (username) {
       return res.status(500).json({ error: "Username already exists" });
     }
 
