@@ -18,34 +18,7 @@ const {
 } = require("../validators/userValidator");
 
 const userRoute = express.Router();
-/**
- * @swagger
- * tags:
- *   name: Users
- *   description: User management
- */
-/**
- * @swagger
- * /api/user/register:
- *   post:
- *     summary: Register a new user
- *     tags: [Users]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/User'
- *     responses:
- *       200:
- *         description: User created successfully
- *       400:
- *         description: Bad request. Invalid request body
- *       409:
- *         description: Conflict. User already exists with the same email address
- *       500:
- *         description: Internal server error
- */
+
 userRoute.post("/register", validateRegisterUser, registerUser);
 // login
 
