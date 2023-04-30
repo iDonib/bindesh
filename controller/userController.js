@@ -233,7 +233,7 @@ const updateUserProfileById = async (req, res) => {
 
     hashedPassword = await bcrypt.hash(password, 10);
     const user = await userModel.findByIdAndUpdate(
-      { _id: req.params.id },
+      { _id: req.user.id },
       {
         fullName: fullName,
         email: email,
