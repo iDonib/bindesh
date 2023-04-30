@@ -64,7 +64,7 @@ const deleteOrganization = async (req, res) => {
 // get all organizations
 const getAllOrganization = async (req, res) => {
   try {
-    const organizations = await organizationModel.find();
+    const organizations = await organizationModel.find({},"-_id name website");
     if (!organizations) {
       return res.status(404).json({ error: "No organization found" });
     }
@@ -78,7 +78,7 @@ const getAllOrganization = async (req, res) => {
 // get all organizations created by single user
 const getAllOrgByUser = async (req, res) => {
   try {
-    const org = await organizationModel.find({admin:req.user.id});
+    const org = await organizationModel.find({admin:req.user.id},"-_id name website");
     if(!org){
       return res.status(404).json({error:"No organization found"});
     }
