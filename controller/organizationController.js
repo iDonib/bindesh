@@ -61,4 +61,19 @@ const deleteOrganization = async (req, res) => {
   }
 };
 
-module.exports = { createOrganization, updateOrganization, deleteOrganization };
+// get all organizations
+const getAllOrganization = async (req, res) =>{
+  try {
+    const organizations = await organizationModel.find();
+    if(!organizations){
+      return res.status(404).json({error: "No organization found"})
+    };
+    res.status(200).json({message: "All organizations", organizations})
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({error: "Error while getting organizations"})
+    
+  }
+} ;
+
+module.exports = { createOrganization, updateOrganization, deleteOrganization, getAllOrganization };

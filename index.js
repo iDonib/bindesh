@@ -9,7 +9,7 @@ app.use(express.json());
 
 // Routes
 const routers = require("./main.route");
-app.use("/api", routers);
+app.use("/orgFeeder/api", routers);
 // Error handler
 const port = process.env.Port || 5000;
 if (process.env.NODE.ENV !== "test")
