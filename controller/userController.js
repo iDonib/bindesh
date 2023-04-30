@@ -277,7 +277,7 @@ const deleteUser = async (req, res) => {
 
 const getAllUsers = async (req, res) => {
   try {
-    const users = await userModel.find({}, "-_id username email userType");
+    const users = await userModel.find({}, " username email userType");
     if (!users) {
       res.status(400).json({ message: "No users found!" });
     }
