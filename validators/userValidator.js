@@ -1,4 +1,5 @@
 const { body, validationResult } = require("express-validator");
+const validateReq = require("../helper/validationHelper");
 
 const validateRegisterUser = [
   body("fullName")
@@ -14,11 +15,7 @@ const validateRegisterUser = [
     .withMessage("Password must be greater than 6 characters"),
 
   (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(200).json({ errors: errors.array() });
-    }
-    next();
+    validateReq(req, res, next);
   },
 ];
 
@@ -28,12 +25,22 @@ const validateLoginUser = [
   body("password").notEmpty().withMessage("Password is required"),
 
   (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(200).json({ errors: errors.array() });
-    }
-    next();
+    validateReq(req, res, next);
   },
 ];
 
-module.exports = { validateRegisterUser, validateLoginUser };
+const validateResetPassword = [
+  body("email").isEmail().withMessage("Invalid email"),
+  body("otp").notEmpty().withMessage("Enter otp"),
+  body("newPassword").notEmpty().withMessage("Password is required"),
+
+  (req, res, next) => {
+    validateReq(req, res, next);
+  },
+];
+
+module.exports = {
+  validateRegisterUser,
+  validateLoginUser,
+  validateResetPassword,
+};

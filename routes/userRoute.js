@@ -15,6 +15,7 @@ const { isLoggedIn, isAdmin } = require("../middleware/auth");
 const {
   validateRegisterUser,
   validateLoginUser,
+  validateResetPassword,
 } = require("../validators/userValidator");
 
 const userRoute = express.Router();
@@ -29,7 +30,7 @@ userRoute.get("/emailVerify", emailVerify);
 userRoute.post("/forgot-password", forgotPassword);
 
 // reset password
-userRoute.post("/reset-password", resetPassword);
+userRoute.post("/reset-password", validateResetPassword, resetPassword);
 
 //updating user
 userRoute.put("/update-user/", isLoggedIn, updateUserProfileById);

@@ -1,4 +1,5 @@
-const { body, validationResult } = require("express-validator");
+const { body } = require("express-validator");
+const validateReq = require("../helper/validationHelper");
 
 const validateCreateOrg = [
   body("name")
@@ -15,16 +16,13 @@ const validateCreateOrg = [
     .isURL()
     .withMessage("URL invalid"),
 
-  // body("phoneNumber")
-  //   .isLength({ min: 8 })
-  //   .withMessage("Phone number must be at least 8 char long"),
+  body("phoneNumber")
+    .isLength({ min: 8 })
+    .withMessage("Phone number must be at least 8 char long")
+    .optional(),
 
   (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(500).json({ Errors: errors.array() });
-    }
-    next();
+    validateReq(req, res, next);
   },
 ];
 
