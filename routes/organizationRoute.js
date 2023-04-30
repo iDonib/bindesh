@@ -4,6 +4,7 @@ const {
   updateOrganization,
   deleteOrganization,
   getAllOrganization,
+  getAllOrgByUser,
 } = require("../controller/organizationController");
 
 const { isLoggedIn } = require("../middleware/auth");
@@ -26,5 +27,8 @@ organizationRoute.delete("/delete-organization/:id", deleteOrganization);
 
 // get all organizations
 organizationRoute.get("/get-all-organizations", getAllOrganization);
+
+// get all organizations by user id
+organizationRoute.get("/get-all-organizations-by-user/:id",isLoggedIn, getAllOrgByUser);
 
 module.exports = organizationRoute;

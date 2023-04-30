@@ -4,6 +4,7 @@ const crypto = require("crypto");
 
 // Model Schema
 const userModel = require("../model/user");
+const orgModel = require("../model/organization");
 
 require("dotenv").config();
 
@@ -265,7 +266,8 @@ const deleteUser = async (req, res) => {
     if (!user) {
       res.status(400).json({ error: "User not found" });
     }
-
+    //  delete all organizations created by user
+    await orgModel.deleteMany({ admin: req.params.id });
     res.status(200).json({ message: "User deleted successfully!" });
   } catch (error) {
     console.log(error);

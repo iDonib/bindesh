@@ -1,10 +1,10 @@
 // schema
 const organizationModel = require("../model/organization");
 const userModel = require("../model/user");
+
 // create organization
 const createOrganization = async (req, res) => {
   const { name, admin, website, phoneNumber, address } = req.body;
-  // console.log(req.user);
   try {
     const organization = new organizationModel({
       name,
@@ -62,18 +62,37 @@ const deleteOrganization = async (req, res) => {
 };
 
 // get all organizations
-const getAllOrganization = async (req, res) =>{
+const getAllOrganization = async (req, res) => {
   try {
     const organizations = await organizationModel.find();
-    if(!organizations){
-      return res.status(404).json({error: "No organization found"})
-    };
-    res.status(200).json({message: "All organizations", organizations})
+    if (!organizations) {
+      return res.status(404).json({ error: "No organization found" });
+    }
+    res.status(200).json({ message: "All organizations", organizations });
   } catch (error) {
     console.log(error);
-    res.status(500).json({error: "Error while getting organizations"})
-    
+    res.status(500).json({ error: "Error while getting organizations" });
   }
-} ;
+};
 
-module.exports = { createOrganization, updateOrganization, deleteOrganization, getAllOrganization };
+// get all organizations created by single user
+const getAllOrgByUser = async (req, res) => {
+  try {
+    const org = await organizationModel.find({admin:req.user.id});
+    if(!org){
+      return res.status(404).json({error:"No organization found"});
+    }
+    res.status(200).json({message:"All organizations",org});
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({error:"Error while getting organizations"});
+  }
+};
+
+module.exports = {
+  createOrganization,
+  updateOrganization,
+  deleteOrganization,
+  getAllOrganization,
+  getAllOrgByUser,
+};
