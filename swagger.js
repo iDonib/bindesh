@@ -4,7 +4,7 @@ const doc = {
     title: "My API",
     description: "Description",
   },
-  host: "localhost:5000/api",
+  host: "localhost:5000/orgFeeder/api",
   schemes: ["http"],
   
 };
