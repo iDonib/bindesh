@@ -29,6 +29,10 @@ organizationRoute.delete("/delete-organization/:id", deleteOrganization);
 organizationRoute.get("/get-all-organizations", getAllOrganization);
 
 // get all organizations by user id
-organizationRoute.get("/get-all-organizations-by-user/:id",isLoggedIn, getAllOrgByUser);
+organizationRoute.get(
+  "/get-all-organizations-by-user/:id",
+  isLoggedIn,
+  getAllOrgByUser
+);
 
 module.exports = organizationRoute;
