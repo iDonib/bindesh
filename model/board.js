@@ -7,6 +7,11 @@ const boardSchema = new Schema(
       type: String,
       required: true,
     },
+    organization: {
+      type: Schema.Types.ObjectId,
+      ref: "Organization",
+      required: true,
+    },
     featureRequest: [
       {
         type: Schema.Types.ObjectId,
