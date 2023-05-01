@@ -25,6 +25,7 @@ const transporter = nodemailer.createTransport({
 
 // Register User
 const registerUser = async (req, res) => {
+  //data from req
   const { fullName, username, email, userType, password, avatar, phoneNumber } =
     req.body;
   const sendVerifyEmail = async (name, email, userId) => {
@@ -42,7 +43,6 @@ const registerUser = async (req, res) => {
       console.error(error);
     }
   };
-  //data from req
   try {
     // Checking for existing user
     const existingUser = await userModel.findOne({
@@ -54,9 +54,8 @@ const registerUser = async (req, res) => {
         .status(500)
         .json({ Error: "User with this email already exists!" });
     }
-
-    const username = await userModel.findOne({ username: username });
-    if (username) {
+    const existingUsername = await userModel.findOne({ username: username });
+    if (existingUsername) {
       return res.status(500).json({ error: "Username already exists" });
     }
 
