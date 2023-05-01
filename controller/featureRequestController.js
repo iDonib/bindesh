@@ -64,7 +64,10 @@ const deleteFeatureRequest = async (req, res) => {
       req.params.id
     );
     // feature deleted by only by the creator user and organization admin
-    if (featureRequest.createdBy.toString() !== req.user.id) {
+    if (
+      featureRequest.createdBy.toString() !== req.user.id ||
+      req.user.userType !== "admin"
+    ) {
       return res.status(401).json({ error: "Not authorized" });
     }
     if (!featureRequest) {
