@@ -1,4 +1,6 @@
 const featureRequestModel = require("../model/featureRequest");
+const boardModel = require("../model/board");
+const User = require("../model/user");
 
 const createFeatureRequest = async (req, res) => {
   const { title, description, board } = req.body;
@@ -11,6 +13,10 @@ const createFeatureRequest = async (req, res) => {
     });
 
     await featureRequest.save();
+    //push feature request to board
+    const boardData = await boardModel.findByIdAndUpdate(board);
+    boardData.featureRequest.push(featureRequest);
+    console.log(boardData);
     res.status(200).json({
       message: "Feature Request created successfully!",
       featureRequest: featureRequest,
@@ -33,16 +39,19 @@ const updateFeatureRequest = async (req, res) => {
       { new: true }
     );
 
+    // feature updated by only by the creator user
+    if (featureRequest.createdBy.toString() !== req.user.id) {
+      return res.status(401).json({ error: "Not authorized" });
+    }
+
     if (!featureRequest) {
       return res.status(404).json({ error: "Feature request not found" });
     }
 
-    res
-      .status(200)
-      .json({
-        message: "Feature Request updated successfully!",
-        updated: featureRequest,
-      });
+    res.status(200).json({
+      message: "Feature Request updated successfully!",
+      updated: featureRequest,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error while updating feature request" });
@@ -54,6 +63,10 @@ const deleteFeatureRequest = async (req, res) => {
     const featureRequest = await featureRequestModel.findByIdAndDelete(
       req.params.id
     );
+    // feature deleted by only by the creator user and organization admin
+    if (featureRequest.createdBy.toString() !== req.user.id) {
+      return res.status(401).json({ error: "Not authorized" });
+    }
     if (!featureRequest) {
       return res.status(404).json({ error: "Feature Request not found" });
     }
@@ -79,10 +92,14 @@ const getAllFeatReq = async (req, res) => {
 
 const getAllFeatReqByUser = async (req, res) => {
   try {
-    const feat = await featureRequestModel.find(
-      { createdBy: req.user.id },
-      "-_id title description"
-    );
+    const feat = await featureRequestModel
+      .find({ createdBy: req.user.id })
+      .populate({
+        path: "createdBy",
+        model: User,
+        select: "fullName userName email avatar phoneNumber userType",
+      });
+
     if (!feat) {
       return res.status(404).json({ error: "No feature request found" });
     }

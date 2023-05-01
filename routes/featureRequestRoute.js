@@ -18,7 +18,11 @@ featureRequestRoute.post(
 
 featureRequestRoute.patch("/update-feature-request/:id", updateFeatureRequest);
 
-featureRequestRoute.delete("delete-feature-request/:id", deleteFeatureRequest);
+featureRequestRoute.delete(
+  "/delete-feature-request/:id",
+  isLoggedIn,
+  deleteFeatureRequest
+);
 
 featureRequestRoute.get("/get-all-feature-request", getAllFeatReq);
 
