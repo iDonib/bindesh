@@ -1,5 +1,6 @@
 const feedbackModel = require("../model/feedback");
 const boardModel = require("../model/board");
+const userModel = require("../model/user");
 
 const createFeedback = async (req, res) => {
   const { title, description, board } = req.body;
@@ -38,6 +39,10 @@ const updateFeedback = async (req, res) => {
       { new: true }
     );
 
+    if (feedback.createdBy.toString() !== req.user.id) {
+      return res.status(401).json({ error: "Not authorized" });
+    }
+
     if (!feedback) {
       return res.status(404).json({ error: "Feedback not found" });
     }
@@ -55,6 +60,10 @@ const updateFeedback = async (req, res) => {
 const deleteFeedback = async (req, res) => {
   try {
     const feedback = await feedbackModel.findByIdAndDelete(req.params.id);
+
+    if (feedback.createdBy.toString() !== req.user.id) {
+      return res.status(401).json({ error: "Not authorized" });
+    }
     if (!feedback) {
       return res.status(404).json({ error: "Feedback not found" });
     }
@@ -67,7 +76,19 @@ const deleteFeedback = async (req, res) => {
 
 const getAllFeedback = async (req, res) => {
   try {
-    const feedback = await feedbackModel.find();
+    const feedback = await feedbackModel
+      .find()
+      .populate({
+        path: "createdBy",
+        model: userModel,
+        select: "fullName username avatar email phoneNumber userType",
+      })
+      .populate({
+        path: "board",
+        model: boardModel,
+        select: "name",
+      });
+
     if (!feedback) {
       return res.status(404).json({ error: "No feedback found" });
     }
@@ -82,7 +103,19 @@ const getAllFeedback = async (req, res) => {
 
 const getAllFeedbackByUser = async (req, res) => {
   try {
-    const feedback = await feedbackModel.find({ createdBy: req.params.id });
+    const feedback = await feedbackModel
+      .find({ createdBy: req.params.id })
+      .populate({
+        path: "createdBy",
+        model: userModel,
+        select: "fullName username avatar email phoneNumber userType",
+      })
+      .populate({
+        path: "board",
+        model: boardModel,
+        select: "name",
+      });
+
     if (!feedback) {
       return res.status(404).json({ error: "No feature request found" });
     }
