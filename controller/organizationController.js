@@ -16,14 +16,14 @@ const createOrganization = async (req, res) => {
       address,
     });
     await organization.save();
-    // create board automatically when organization is created
-    const board = new boardModel({
-      name: organization.name + " Board",
-      organization: organization._id,
-      admin: req.user.id,
-    });
-    console.log(board);
-    await board.save();
+    // // create board automatically when organization is created
+    // const board = new boardModel({
+    //   name: organization.name + " Board",
+    //   organization: organization._id,
+    //   admin: req.user.id,
+    // });
+    // console.log(board);
+    // await board.save();
     res.status(201).json({
       message: "Organization created successfully",
       orgData: organization,
@@ -95,10 +95,7 @@ const getAllOrganization = async (req, res) => {
 // get all organizations created by single user
 const getAllOrgByUser = async (req, res) => {
   try {
-    const org = await organizationModel.find(
-      { admin: req.user.id },
-      "-_id name website"
-    );
+    const org = await organizationModel.find({ admin: req.user.id });
     if (!org) {
       return res.status(404).json({ error: "No organization found" });
     }

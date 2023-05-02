@@ -1,4 +1,4 @@
-const featureRequestModel = require("../model/featureRequest");
+const featureRequestModel = require("../model/boardType");
 const boardModel = require("../model/board");
 const User = require("../model/user");
 

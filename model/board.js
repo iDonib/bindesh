@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const BoardType = require("../constant");
 const Schema = mongoose.Schema;
 
 const boardSchema = new Schema(
@@ -12,27 +13,15 @@ const boardSchema = new Schema(
       ref: "Organization",
       required: true,
     },
-    featureRequest: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "FeatureRequest",
-        default: null,
-      },
-    ],
-    feedback: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Feedback",
-        default: null,
-      },
-    ],
-    bugReport: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "BigReport",
-        default: null,
-      },
-    ],
+    description: {
+      type: String,
+      required: true,
+    },
+    boardType: {
+      type: String,
+      enum: Object.values(BoardType),
+      default: "bugReport",
+    },
   },
   { timestamps: true }
 );

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const featureRequestSchema = new mongoose.Schema(
+const boardTypeSchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -20,6 +20,11 @@ const featureRequestSchema = new mongoose.Schema(
       ref: "Board",
       required: false,
     },
+    type: {
+      type: String,
+      enum: ["Feedback", "Feature Request", "Bug Report"],
+      required: true,
+    },
     comments: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -30,5 +35,5 @@ const featureRequestSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const FeatureRequest = mongoose.model("FeatureRequest", featureRequestSchema);
-module.exports = FeatureRequest;
+const BoardType = mongoose.model("FeatureRequest", boardTypeSchema);
+module.exports = BoardType;
