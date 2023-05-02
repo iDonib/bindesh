@@ -26,7 +26,7 @@ const transporter = nodemailer.createTransport({
 // Register User
 const registerUser = async (req, res) => {
   //data from req
-  const { fullName, username, email, userType, password, avatar, phoneNumber } =
+  const { fullName, username, email, userType, password, phoneNumber } =
     req.body;
   const sendVerifyEmail = async (name, email, userId) => {
     try {
@@ -68,7 +68,7 @@ const registerUser = async (req, res) => {
       username: username,
       password: hashedPassword,
       userType: userType,
-      avatar: avatar,
+      avatar: req.file.path,
       phoneNumber: phoneNumber,
     });
 
@@ -229,8 +229,7 @@ const resetPassword = async (req, res) => {
 
 const updateUserProfileById = async (req, res) => {
   try {
-    const { fullName, email, password, username, avatar, phoneNumber } =
-      req.body;
+    const { fullName, email, password, username, phoneNumber } = req.body;
 
     hashedPassword = await bcrypt.hash(password, 10);
     const user = await userModel.findByIdAndUpdate(
@@ -239,7 +238,7 @@ const updateUserProfileById = async (req, res) => {
         fullName: fullName,
         email: email,
         password: hashedPassword,
-        avatar: avatar,
+        avatar: req.file.path,
         username: username,
         phoneNumber: phoneNumber,
       },
@@ -261,13 +260,14 @@ const updateUserProfileById = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   try {
-    const user = await userModel.findByIdAndDelete(req.params.id);
+    const user = await userModel.findByIdAndDelete(req.user.id);
 
     if (!user) {
       res.status(400).json({ error: "User not found" });
     }
     //  delete all organizations created by user
-    await orgModel.deleteMany({ admin: req.params.id });
+    await orgModel.deleteMany({ admin: req.user.id });
+
     res.status(200).json({ message: "User deleted successfully!" });
   } catch (error) {
     console.log(error);

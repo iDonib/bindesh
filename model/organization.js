@@ -10,11 +10,17 @@ const organizationSchema = new mongoose.Schema(
     admin: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true, 
+      required: true,
     },
     website: {
       type: String,
       required: true,
+    },
+    logo: {
+      type: String,
+    },
+    photo: {
+      type: String,
     },
     phoneNumber: {
       type: String,

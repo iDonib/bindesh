@@ -10,6 +10,8 @@ const createOrganization = async (req, res) => {
       name,
       admin: req.user.id,
       website,
+      logo: req.files[0].path,
+      photo: req.files[1].path,
       phoneNumber,
       address,
     });
@@ -35,9 +37,17 @@ const createOrganization = async (req, res) => {
 // update organization
 const updateOrganization = async (req, res) => {
   try {
+    const { name, website, phoneNumber, address } = req.body;
     const organization = await organizationModel.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      {
+        name,
+        website,
+        logo: req.files[0].path,
+        photo: req.files[1].path,
+        phoneNumber,
+        address,
+      },
       { new: true }
     );
     if (!organization) {
