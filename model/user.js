@@ -20,8 +20,6 @@ const userSchema = new mongoose.Schema(
     },
     avatar: {
       type: String,
-      default:
-        "https://www.freepik.com/premium-photo/photo-icon-with-woman-blue-background-3d-rendering_23319383.htm#query=profile%20avatar%20pic&position=22&from_view=search&track=ais",
     },
     userType: {
       type: String,

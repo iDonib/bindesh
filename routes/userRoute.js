@@ -1,4 +1,6 @@
 const express = require("express");
+const upload = require("../helper/multer");
+
 const {
   registerUser,
   loginUser,
@@ -20,7 +22,12 @@ const {
 
 const userRoute = express.Router();
 
-userRoute.post("/register", validateRegisterUser, registerUser);
+userRoute.post(
+  "/register",
+  upload.single("file"),
+  validateRegisterUser,
+  registerUser
+);
 // login
 
 /**
@@ -167,7 +174,12 @@ userRoute.post("/reset-password", validateResetPassword, resetPassword);
  *         description: User with this ID not found
  */
 
-userRoute.put("/update-user/", isLoggedIn, updateUserProfileById);
+userRoute.put(
+  "/update-user",
+  isLoggedIn,
+  upload.single("file"),
+  updateUserProfileById
+);
 
 //delete user
 /**
@@ -192,7 +204,7 @@ userRoute.put("/update-user/", isLoggedIn, updateUserProfileById);
  *       404:
  *         description: User with this ID not found
  */
-userRoute.delete("/delete-user/:id", deleteUser);
+userRoute.delete("/delete-user", isLoggedIn, deleteUser);
 
 // get all users
 userRoute.get("/get-all-users", getAllUsers);

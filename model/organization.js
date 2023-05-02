@@ -18,13 +18,9 @@ const organizationSchema = new mongoose.Schema(
     },
     logo: {
       type: String,
-      default:
-        "https://www.freepik.com/premium-photo/photo-icon-with-woman-blue-background-3d-rendering_23319383.htm#query=profile%20avatar%20pic&position=22&from_view=search&track=ais",
     },
     photo: {
       type: String,
-      default:
-        "https://www.freepik.com/premium-photo/photo-icon-with-woman-blue-background-3d-rendering_23319383.htm#query=profile%20avatar%20pic&position=22&from_view=search&track=ais",
     },
     phoneNumber: {
       type: String,
