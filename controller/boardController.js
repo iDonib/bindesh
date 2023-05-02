@@ -1,11 +1,30 @@
 const boardModel = require("../model/board");
+// create board
+const createBoard = async (req, res) => {
+  try {
+    const { name, organization, description, boardType } = req.body;
+    const board = new boardModel({
+      name,
+      organization,
+      description,
+      admin: req.user.id,
+      boardType,
+    });
+    await board.save();
+    //push board to organization
+    res.status(201).json({
+      message: "Board created successfully",
+      boardData: board,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      error: "Board creation failed",
+    });
+  }
+};
 
-/**
- *
- * @param {*} req
- * @param {*} res
- * @returns
- */
+//update board
 const updateBoard = async (req, res) => {
   try {
     const { name } = req.body;
@@ -26,5 +45,6 @@ const updateBoard = async (req, res) => {
 };
 
 module.exports = {
+  createBoard,
   updateBoard,
 };
