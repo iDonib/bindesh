@@ -10,8 +10,8 @@ const createOrganization = async (req, res) => {
       name,
       admin: req.user.id,
       website,
-      logo: req.files[0].path,
-      photo: req.files[1].path,
+      logo: req.files?.[0]?.path,
+      photo: req.files?.[1]?.path,
       phoneNumber,
       address,
     });
@@ -43,8 +43,8 @@ const updateOrganization = async (req, res) => {
       {
         name,
         website,
-        logo: req.files[0].path,
-        photo: req.files[1].path,
+        logo: req.files?.[0]?.path,
+        photo: req.files?.[1]?.path,
         phoneNumber,
         address,
       },

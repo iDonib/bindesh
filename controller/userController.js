@@ -68,7 +68,7 @@ const registerUser = async (req, res) => {
       username: username,
       password: hashedPassword,
       userType: userType,
-      avatar: req.file.path,
+      avatar: req.file?.path,
       phoneNumber: phoneNumber,
     });
 
@@ -238,7 +238,7 @@ const updateUserProfileById = async (req, res) => {
         fullName: fullName,
         email: email,
         password: hashedPassword,
-        avatar: req.file.path,
+        avatar: req.file?.path,
         username: username,
         phoneNumber: phoneNumber,
       },
