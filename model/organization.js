@@ -18,9 +18,11 @@ const organizationSchema = new mongoose.Schema(
     },
     logo: {
       type: String,
+      default: "apple.jpg",
     },
     photo: {
       type: String,
+      default: "apple.jpg",
     },
     phoneNumber: {
       type: String,
