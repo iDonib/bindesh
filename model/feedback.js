@@ -10,20 +10,22 @@ const feedbackSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    status: {
-      type: String,
-      enum: ["open", "in-progress", "closed"],
-      default: "open",
-    },
-    category: {
-      type: String,
-      required: true,
-    },
-    user: {
+    createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
+    board: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Board",
+      required: false,
+    },
+    comments: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Comment",
+      },
+    ],
   },
   { timestamps: true }
 );

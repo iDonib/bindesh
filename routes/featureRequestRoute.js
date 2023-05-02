@@ -7,16 +7,23 @@ const {
   getAllFeatReq,
   getAllFeatReqByUser,
 } = require("../controller/featureRequestController");
+const { validateFeatues } = require("../validators/featureValidator");
 
 const featureRequestRoute = express.Router();
 
 featureRequestRoute.post(
   "/create-feature-request",
   isLoggedIn,
+  validateFeatues,
   createFeatureRequest
 );
 
-featureRequestRoute.patch("/update-feature-request/:id", updateFeatureRequest);
+featureRequestRoute.patch(
+  "/update-feature-request/:id",
+  isLoggedIn,
+  validateFeatues,
+  updateFeatureRequest
+);
 
 featureRequestRoute.delete(
   "/delete-feature-request/:id",

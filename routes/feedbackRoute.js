@@ -1,23 +1,38 @@
 const express = require("express");
+const { isLoggedIn } = require("../middleware/auth");
 const {
   createFeedback,
   updateFeedback,
-  getFeedbackById,
-  getAllFeedbacks,
+  getAllFeedback,
+  getAllFeedbackByUser,
   deleteFeedback,
 } = require("../controller/feedbackController");
-const { isLoggedIn } = require("../middleware/auth");
+const { validateFeatues } = require("../validators/featureValidator");
 
-const feedbackRouter = express.Router();
+const feedbackRoute = express.Router();
 
-feedbackRouter.post("/create", isLoggedIn, createFeedback);
+feedbackRoute.post(
+  "/create-feedback",
+  isLoggedIn,
+  validateFeatues,
+  createFeedback
+);
 
-feedbackRouter.put("/update/:id", updateFeedback);
+feedbackRoute.put(
+  "/update-feedback/:id",
+  isLoggedIn,
+  validateFeatues,
+  updateFeedback
+);
 
-feedbackRouter.get("/getFeedback/:id", getFeedbackById);
+feedbackRoute.get("/get-all-feedback/", getAllFeedback);
 
-feedbackRouter.get("/getAll", getAllFeedbacks);
+feedbackRoute.get(
+  "/get-all-feedback-by-user/:id",
+  isLoggedIn,
+  getAllFeedbackByUser
+);
 
-feedbackRouter.delete("/delete/:id", deleteFeedback);
+feedbackRoute.delete("/delete-feedback/:id", deleteFeedback);
 
-module.exports = feedbackRouter;
+module.exports = feedbackRoute;
