@@ -1,6 +1,11 @@
 const boardModel = require("../model/board");
 
-// update board
+/**
+ *
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
 const updateBoard = async (req, res) => {
   try {
     const { name } = req.body;

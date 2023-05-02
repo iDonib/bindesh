@@ -16,7 +16,6 @@ const createFeatureRequest = async (req, res) => {
     //push feature request to board
     const boardData = await boardModel.findByIdAndUpdate(board);
     boardData.featureRequest.push(featureRequest);
-    console.log(boardData);
     res.status(200).json({
       message: "Feature Request created successfully!",
       featureRequest: featureRequest,
