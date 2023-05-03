@@ -20,7 +20,7 @@ const boardSchema = new Schema(
     boardType: {
       type: String,
       enum: Object.values(BoardType),
-      default: "bugReport",
+      required: true,
     },
     post: [
       {
