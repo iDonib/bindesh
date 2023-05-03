@@ -4,6 +4,8 @@ const organizationModel = require("../model/organization");
 const createBoard = async (req, res) => {
   try {
     const { name, organization, description, boardType } = req.body;
+    const org = await organizationModel.findById(organization);
+    if (!org) return res.status(404).json({ error: "Organization not valid" });
     const board = new boardModel({
       name,
       organization,
@@ -12,11 +14,8 @@ const createBoard = async (req, res) => {
       boardType,
     });
     await board.save();
-    //push board to organization
-    const organizationData = await organizationModel.findById(organization);
-    organizationData.boards.push(board._id);
-    await organizationData.save();
-
+    org.board = board._id;
+    await org.save();
     res.status(201).json({
       message: "Board created successfully",
       boardData: board,

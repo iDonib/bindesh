@@ -29,6 +29,10 @@ const organizationSchema = new mongoose.Schema(
     address: {
       type: String,
     },
+    board: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Board",
+    },
   },
   {
     timestamps: true,

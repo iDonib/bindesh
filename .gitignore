@@ -1,3 +1,4 @@
 node_modules
 .env
 swagger-output.json
+public
