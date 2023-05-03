@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const BoardType = require("../constant");
+const { BoardType } = require("../constant");
 const Schema = mongoose.Schema;
 
 const boardSchema = new Schema(
@@ -22,6 +22,13 @@ const boardSchema = new Schema(
       enum: Object.values(BoardType),
       default: "bugReport",
     },
+    post: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Post",
+        default: null,
+      },
+    ],
   },
   { timestamps: true }
 );

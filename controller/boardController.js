@@ -1,4 +1,5 @@
 const boardModel = require("../model/board");
+const organizationModel = require("../model/organization");
 // create board
 const createBoard = async (req, res) => {
   try {
@@ -12,6 +13,10 @@ const createBoard = async (req, res) => {
     });
     await board.save();
     //push board to organization
+    const organizationData = await organizationModel.findById(organization);
+    organizationData.boards.push(board._id);
+    await organizationData.save();
+
     res.status(201).json({
       message: "Board created successfully",
       boardData: board,

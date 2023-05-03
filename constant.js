@@ -1,13 +1,24 @@
 const UserRole = Object.freeze({
-  Admin: "admin",
+  ADMIN: "admin",
   User: "user",
 });
 
 const BoardType = Object.freeze({
-  Feedback: "feedback",
-  FeatureRequest: "featureRequest",
-  BugReport: "bugReport",
+  FEEDBACK: "feedback",
+  FEATUREREQUEST: "featureRequest",
+  BUGREPORT: "bugReport",
 });
 
-module.exports = UserRole;
-module.exports = BoardType;
+const PostPriority = Object.freeze({
+  LOW: "low",
+  MEDIUM: "medium",
+  HIGH: "high",
+});
+
+const PostStatus = Object.freeze({
+  OPEN: "open",
+  INPROGRESS: "inProgress",
+  DONE: "done",
+});
+
+module.exports = { UserRole, BoardType, PostPriority, PostStatus };
