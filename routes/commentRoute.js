@@ -5,12 +5,13 @@ const {
   deleteCommentById,
   getAllCommentsOfPost,
 } = require("../controller/commentController");
+const { validateComment } = require("../validators/commentValidator");
 
 const commentRoute = express.Router();
 
-commentRoute.post("/create-comment", createComment);
+commentRoute.post("/create-comment", validateComment, createComment);
 
-commentRoute.patch("/update-comment/:id", updateComment);
+commentRoute.patch("/update-comment/:id", validateComment, updateComment);
 
 commentRoute.delete("/delete-comment/:id", deleteCommentById);
 
