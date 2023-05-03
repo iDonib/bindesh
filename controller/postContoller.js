@@ -17,6 +17,9 @@ const createPost = async (req, res) => {
     await post.save();
     // push post to board
     const boardData = await boardModel.findById(board);
+    if (!boardData) {
+      return res.status(400).json({ error: "Board not found" });
+    }
     boardData.post.push(post._id);
     await boardData.save();
 
