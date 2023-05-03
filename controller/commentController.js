@@ -14,13 +14,14 @@ const createComment = async (req, res) => {
       email,
       post,
     });
-
+  
+    postData.comments.push(comm._id);
+    await postData.save();
+    
     res
       .status(200)
       .json({ message: "Comment added successfully", comment: comm });
 
-    postData.comments.push(comm._id);
-    await postData.save();
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Comment creation failed" });
