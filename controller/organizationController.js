@@ -16,14 +16,6 @@ const createOrganization = async (req, res) => {
       address,
     });
     await organization.save();
-    // // create board automatically when organization is created
-    // const board = new boardModel({
-    //   name: organization.name + " Board",
-    //   organization: organization._id,
-    //   admin: req.user.id,
-    // });
-    // console.log(board);
-    // await board.save();
     res.status(201).json({
       message: "Organization created successfully",
       orgData: organization,
