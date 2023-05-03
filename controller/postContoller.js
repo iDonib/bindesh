@@ -12,7 +12,7 @@ const createPost = async (req, res) => {
       description,
       status,
       priority,
-      image: req.files?.path,
+      image: req.file?.path,
     });
     await post.save();
     // push post to board
@@ -43,7 +43,7 @@ const updatePost = async (req, res) => {
         description,
         status,
         priority,
-        image: req.files?.path,
+        image: req.file?.path,
       },
       { new: true }
     );
