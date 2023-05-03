@@ -1,6 +1,5 @@
 const { body } = require("express-validator");
 const validateReq = require("../helper/validationHelper");
-// import { body } from "express-validator";
 const validateRegisterUser = [
   body("fullName")
     .notEmpty()
