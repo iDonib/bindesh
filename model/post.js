@@ -10,6 +10,10 @@ const postSchema = new Schema(
       type: String,
       required: true,
     },
+    email: {
+      type: String,
+      required: true,
+    },
     board: {
       type: Schema.Types.ObjectId,
       ref: "Board",
