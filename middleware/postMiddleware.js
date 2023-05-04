@@ -16,10 +16,10 @@ const isPostOwner = async (req, res, next) => {
     });
     if (!orgUser) return res.status(400).json({ error: "orgUser Not Found" });
     console.log(orgUser);
-    if (post.createdBy.toString() !== req.user.id || orgUser.role !== "admin") {
-      return res.status(400).json({ error: "You are not authorized" });
-    }
-    next();
+    if (post.createdBy.toString() === req.user.id.toString()) next();
+
+    if (orgUser.role.toString() === "admin") next();
+    else return res.status(400).json({ error: "You are not authorized" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Something went wrong!" });
