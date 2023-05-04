@@ -50,7 +50,7 @@ const updateBoard = async (req, res) => {
 
 const getBoardByOrgId = async (req, res) => {
   try {
-    const boards = await boardModel.find({ organization: req.params.id });
+    const boards = await boardModel.find({ organization: req.params.orgId });
     if (!boards) {
       return res.status(404).json({ error: "No boards found" });
     }
