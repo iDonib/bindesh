@@ -3,6 +3,7 @@ const {
   createPost,
   updatePost,
   deletePost,
+  getPostByBoardId,
 } = require("../controller/postContoller");
 const { validatePost } = require("../validators/postValidator");
 const upload = require("../helper/multer");
@@ -21,5 +22,7 @@ postRoute.patch(
 
 // delete post
 postRoute.delete("/delete-post/:id", deletePost);
+
+postRoute.get("/get-post/board/:boardId", getPostByBoardId);
 
 module.exports = postRoute;

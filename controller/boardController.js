@@ -48,7 +48,21 @@ const updateBoard = async (req, res) => {
   }
 };
 
+const getBoardByOrgId = async (req, res) => {
+  try {
+    const boards = await boardModel.find({ organization: req.params.id });
+    if (!boards) {
+      return res.status(404).json({ error: "No boards found" });
+    }
+    res.status(200).json({ boards: boards });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error while getting boards" });
+  }
+};
+
 module.exports = {
   createBoard,
   updateBoard,
+  getBoardByOrgId,
 };
