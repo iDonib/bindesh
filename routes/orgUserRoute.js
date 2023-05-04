@@ -7,12 +7,18 @@ const {
   deleteOrgUser,
 } = require("../controller/orgUserController");
 
-const { isLoggedIn, isAdmin } = require("../middleware/auth");
+const { isLoggedIn } = require("../middleware/auth");
+const { isOrgAdmin } = require("../middleware/orgUserMiddleware");
 
 const orgUserRoute = express.Router();
 
-orgUserRoute.post("/add/:id", isLoggedIn, addOrgUser);
-orgUserRoute.put("/update/:id/:userId", isLoggedIn, isAdmin, updateOrgUser);
-orgUserRoute.delete("/delete/:id/:userId", isLoggedIn, isAdmin, deleteOrgUser);
+orgUserRoute.post("/add/:id", isLoggedIn, isOrgAdmin, addOrgUser);
+orgUserRoute.put("/update/:id/:userId", isLoggedIn, isOrgAdmin, updateOrgUser);
+orgUserRoute.delete(
+  "/delete/:id/:userId",
+  isLoggedIn,
+  isOrgAdmin,
+  deleteOrgUser
+);
 
 module.exports = orgUserRoute;

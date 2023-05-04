@@ -1,8 +1,16 @@
 const orgUserModel = require("../model/orgUsers");
-const organizationModel = require("../model/organization");
+const userModel = require("../model/user");
 const addOrgUser = async (req, res) => {
   try {
     const { user, role } = req.body;
+
+    const registeredUser = await userModel.findById(user);
+    if (!registeredUser) {
+      return res
+        .status(400)
+        .json({ error: "This user is not registered in our system" });
+    }
+
     const existingUser = await orgUserModel.findOne({
       orgId: req.params.id,
       userId: user,
@@ -13,24 +21,15 @@ const addOrgUser = async (req, res) => {
         .json({ Error: " This user  already exists in this organization !" });
     }
 
-    const adminn = await orgUserModel.findOne({ userId: req.user.id });
-
-    if (adminn.role == "admin") {
-      const newOrgUser = new orgUserModel({
-        orgId: req.params.id,
-        userId: user,
-        role,
-      });
-      await newOrgUser.save();
-      return res.status(401).json({ error: "Only admin can add org user" });
-    }
+    const newOrgUser = new orgUserModel({
+      orgId: req.params.id,
+      userId: user,
+      role,
+    });
+    await newOrgUser.save();
     res.status(201).json({
       message: "Org user added successfully",
       orgUserData: newOrgUser,
-    });
-
-    await organizationModel.findByIdAndUpdate(req.params.id, {
-      orgUsers: newOrgUser._id,
     });
   } catch (error) {
     console.log(error);
@@ -43,7 +42,7 @@ const updateOrgUser = async (req, res) => {
     const { role } = req.body;
     const orgUser = await orgUserModel.findOne({
       orgId: req.params.id,
-      userId: req.user._id,
+      userId: req.params.userId,
     });
     if (!orgUser) {
       return res.status(404).json({ error: "OrgUser not found" });
@@ -66,13 +65,11 @@ const deleteOrgUser = async (req, res) => {
   try {
     const orgUser = await orgUserModel.findOne({
       orgId: req.params.id,
-      userId: req.user._id,
+      userId: req.params.userId,
     });
+
     if (!orgUser) {
       return res.status(404).json({ error: "OrgUser not found" });
-    }
-    if (orgUser.role !== "admin") {
-      return res.status(401).json({ error: "Only admin can delete org user" });
     }
     await orgUserModel.findOneAndDelete({ userId: req.params.userId });
     res.status(201).json({ message: "Org user deleted successfully" });

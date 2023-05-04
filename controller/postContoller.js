@@ -1,14 +1,13 @@
 const postModel = require("../model/post");
 const boardModel = require("../model/board");
-const orgUserModel = require("../model/orgUsers");
 
 // create post
 const createPost = async (req, res) => {
   try {
-    const { title, email, board, description, status, priority } = req.body;
+    const { title, board, description, status, priority } = req.body;
     const post = new postModel({
       title,
-      email,
+      createdBy: req.user.id,
       board,
       description,
       status,
@@ -77,32 +76,6 @@ const deletePost = async (req, res) => {
     res.status(201).json({ message: "Post deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: "Post not deleted" });
-  }
-};
-
-const updatePostByOrgUser = async (req, res) => {
-  try {
-    const { title, description, status, priority } = req.body;
-    const post = await postModel.findByIdAndUpdate(
-      req.params.id,
-      {
-        title,
-        description,
-        status,
-        priority,
-        image: req.file?.path,
-      },
-      { new: true }
-    );
-    if (!post) {
-      return res.status(404).json({ error: "Post not found" });
-    }
-    res.status(201).json({
-      message: "Post updated successfully",
-      postData: post,
-    });
-  } catch (error) {
-    res.status(500).json({ error: "Post not updated" });
   }
 };
 
