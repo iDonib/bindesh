@@ -4,10 +4,10 @@ const boardModel = require("../model/board");
 // create post
 const createPost = async (req, res) => {
   try {
-    const { title, board, description, status, priority } = req.body;
+    const { title, board, description, status, priority, createdBy } = req.body;
     const post = new postModel({
       title,
-      createdBy: req.user.id,
+      createdBy,
       board,
       description,
       status,
