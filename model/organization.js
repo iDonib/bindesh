@@ -7,11 +7,7 @@ const organizationSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    admin: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
+
     website: {
       type: String,
       required: true,
@@ -30,10 +26,6 @@ const organizationSchema = new mongoose.Schema(
     },
     address: {
       type: String,
-    },
-    board: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Board",
     },
   },
   {
