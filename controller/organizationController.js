@@ -1,21 +1,27 @@
 // schema
 const organizationModel = require("../model/organization");
-const boardModel = require("../model/board");
+const orgUserModel = require("../model/orgUsers");
 
 // create organization
 const createOrganization = async (req, res) => {
-  const { name, admin, website, phoneNumber, address } = req.body;
+  const { name, website, phoneNumber, address } = req.body;
   try {
     const organization = new organizationModel({
       name,
-      admin: req.user.id,
       website,
       logo: req.files?.[0]?.path,
       photo: req.files?.[1]?.path,
       phoneNumber,
       address,
+      // orgUsers: orgAdmin._id,
     });
     await organization.save();
+    const orgAdmin = await orgUserModel.create({
+      userId: req.user.id,
+      orgId: organization.id,
+      role: "admin",
+    });
+
     res.status(201).json({
       message: "Organization created successfully",
       orgData: organization,

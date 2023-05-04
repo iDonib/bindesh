@@ -4,10 +4,10 @@ const boardModel = require("../model/board");
 // create post
 const createPost = async (req, res) => {
   try {
-    const { title, email, board, description, status, priority } = req.body;
+    const { title, board, description, status, priority } = req.body;
     const post = new postModel({
       title,
-      email,
+      createdBy: req.user.id,
       board,
       description,
       status,
@@ -53,12 +53,13 @@ const updatePost = async (req, res) => {
     if (!post) {
       return res.status(404).json({ error: "Post not found" });
     }
-    res.status(201).json({
+    return res.status(201).json({
       message: "Post updated successfully",
       postData: post,
     });
   } catch (error) {
-    res.status(500).json({ error: "Post not updated" });
+    console.log(error);
+    return res.status(500).json({ error: "Post not updated" });
   }
 };
 

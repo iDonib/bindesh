@@ -1,6 +1,6 @@
 const UserRole = Object.freeze({
   ADMIN: "admin",
-  User: "user",
+  USER: "user",
 });
 
 const BoardType = Object.freeze({
@@ -21,4 +21,9 @@ const PostStatus = Object.freeze({
   DONE: "done",
 });
 
-module.exports = { UserRole, BoardType, PostPriority, PostStatus };
+const OrgUserRole = Object.freeze({
+  ADMIN: "admin",
+  USER: "member",
+});
+
+module.exports = { UserRole, BoardType, PostPriority, PostStatus, OrgUserRole };

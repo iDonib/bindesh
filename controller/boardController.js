@@ -14,8 +14,7 @@ const createBoard = async (req, res) => {
       boardType,
     });
     await board.save();
-    org.board = board._id;
-    await org.save();
+
     res.status(201).json({
       message: "Board created successfully",
       boardData: board,
