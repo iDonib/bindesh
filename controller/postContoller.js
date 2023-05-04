@@ -79,8 +79,22 @@ const deletePost = async (req, res) => {
   }
 };
 
+const getPostByBoardId = async (req, res) => {
+  try {
+    const posts = await postModel.find({ board: req.params.id });
+    if (!posts) {
+      return res.status(404).json({ error: "No posts found" });
+    }
+    res.status(200).json({ posts: posts });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error while getting posts" });
+  }
+};
+
 module.exports = {
   createPost,
   updatePost,
   deletePost,
+  getPostByBoardId,
 };
