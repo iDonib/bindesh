@@ -23,13 +23,13 @@ const createPost = async (req, res) => {
     boardData.post.push(post._id);
     await boardData.save();
 
-    res.status(201).json({
+    return res.status(201).json({
       message: "Post created successfully",
       postData: post,
     });
   } catch (error) {
     console.log(error);
-    res.status(400).json({
+    return res.status(400).json({
       error: "Post creation failed",
     });
   }
@@ -74,9 +74,9 @@ const deletePost = async (req, res) => {
     boardData.post.pop(post._id);
     await boardData.save();
 
-    res.status(201).json({ message: "Post deleted successfully" });
+    return res.status(201).json({ message: "Post deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: "Post not deleted" });
+    return res.status(500).json({ error: "Post not deleted" });
   }
 };
 
@@ -88,10 +88,10 @@ const getPostByBoardId = async (req, res) => {
     if (!posts) {
       return res.status(404).json({ error: "No board found" });
     }
-    res.status(200).json({ posts: posts });
+    return res.status(200).json({ posts: posts });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Error while getting posts" });
+    return res.status(500).json({ error: "Error while getting posts" });
   }
 };
 

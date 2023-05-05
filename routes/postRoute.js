@@ -21,7 +21,7 @@ postRoute.post(
 );
 
 // update post
-postRoute.patch(
+postRoute.put(
   "/update-post/:id",
   upload.single("file"),
   isLoggedIn,

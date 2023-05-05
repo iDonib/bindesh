@@ -23,7 +23,7 @@ const isPostOwner = async (req, res, next) => {
     else return res.status(400).json({ error: "You are not authorized" });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Something went wrong!" });
+    return res.status(500).json({ error: "Something went wrong!" });
   }
 };
 
