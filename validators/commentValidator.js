@@ -8,12 +8,6 @@ const validateComment = [
     .isLength({ min: 2 })
     .withMessage("Comment must be at least two characters"),
 
-  body("email")
-    .notEmpty()
-    .withMessage("Please provide email")
-    .isEmail()
-    .withMessage("Email invalid"),
-
   (req, res, next) => {
     validateReq(req, res, next);
   },

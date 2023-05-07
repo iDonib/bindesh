@@ -3,7 +3,7 @@ const postModel = require("../model/post");
 
 const createComment = async (req, res) => {
   try {
-    const { comment, email, post } = req.body;
+    const { comment, post } = req.body;
 
     const postData = await postModel.findById(post);
     if (!postData) {
@@ -11,17 +11,16 @@ const createComment = async (req, res) => {
     }
     const comm = await commentModel.create({
       comment,
-      email,
+      createdBy: req.user.id,
       post,
     });
-  
+
     postData.comments.push(comm._id);
     await postData.save();
-    
+
     res
       .status(200)
       .json({ message: "Comment added successfully", comment: comm });
-
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Comment creation failed" });
@@ -72,11 +71,11 @@ const deleteCommentById = async (req, res) => {
 
 const getAllCommentsOfPost = async (req, res) => {
   try {
-    const post = await postModel.findById(req.params.id);
-    if (!post) {
-      return res.status(404).json({ error: "Post not found" });
+    const comm = await commentModel.find({ post: req.params.id });
+    if (!comm) {
+      return res.status(404).json({ error: "comment not found" });
     }
-    res.status(200).json({ comments: post.comments });
+    res.status(200).json({ comments: comm });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error while getting comments" });
