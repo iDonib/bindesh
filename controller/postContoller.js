@@ -53,13 +53,15 @@ const updatePost = async (req, res) => {
     if (!post) {
       return res.status(404).json({ error: "Post not found" });
     }
-    return res.status(201).json({
+    res.status(201).json({
       message: "Post updated successfully",
       postData: post,
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ error: "Post not updated" });
+    res.status(400).json({
+      error: " Error while updating post",
+    });
   }
 };
 

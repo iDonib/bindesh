@@ -4,6 +4,9 @@ const postModel = require("../model/post");
 const orgUserModel = require("../model/orgUsers");
 const isPostOwner = async (req, res, next) => {
   try {
+    console.time("Che1");
+    console.time("Che2");
+    console.time("Che3");
     const post = await postModel.findById(req.params.id).populate({
       path: "board",
       model: boardModel,
@@ -15,15 +18,17 @@ const isPostOwner = async (req, res, next) => {
       userId: req.user.id,
     });
 
-    if (orgUser) {
-      if (orgUser.role.toString() === "admin") next();
+    if (orgUser && orgUser.role.toString() === "admin") {
+      return next();
     }
-
-    if (post.createdBy.toString() === req.user.id.toString()) next();
-    else return res.status(400).json({ error: "You are not authorized" });
+    if (post.createdBy.toString() === req.user.id.toString()) {
+      return next();
+    } else {
+      return res.status(400).json({ error: "You are not authorized" });
+    }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Something went wrong!" });
+    return res.status(500).json({ error: "Something went wrong!" });
   }
 };
 
