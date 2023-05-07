@@ -6,10 +6,16 @@ const {
   getAllCommentsOfPost,
 } = require("../controller/commentController");
 const { validateComment } = require("../validators/commentValidator");
+const { isLoggedIn } = require("../middleware/auth");
 
 const commentRoute = express.Router();
 
-commentRoute.post("/create-comment", validateComment, createComment);
+commentRoute.post(
+  "/create-comment",
+  isLoggedIn,
+  validateComment,
+  createComment
+);
 
 commentRoute.patch("/update-comment/:id", validateComment, updateComment);
 
