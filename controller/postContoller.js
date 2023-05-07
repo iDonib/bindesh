@@ -23,13 +23,13 @@ const createPost = async (req, res) => {
     boardData.post.push(post._id);
     await boardData.save();
 
-    return res.status(201).json({
+    res.status(201).json({
       message: "Post created successfully",
       postData: post,
     });
   } catch (error) {
     console.log(error);
-    return res.status(400).json({
+    res.status(400).json({
       error: "Post creation failed",
     });
   }
@@ -53,13 +53,15 @@ const updatePost = async (req, res) => {
     if (!post) {
       return res.status(404).json({ error: "Post not found" });
     }
-    return res.status(201).json({
+    res.status(201).json({
       message: "Post updated successfully",
       postData: post,
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ error: "Post not updated" });
+    res.status(400).json({
+      error: " Error while updating post",
+    });
   }
 };
 
@@ -74,9 +76,9 @@ const deletePost = async (req, res) => {
     boardData.post.pop(post._id);
     await boardData.save();
 
-    return res.status(201).json({ message: "Post deleted successfully" });
+    res.status(201).json({ message: "Post deleted successfully" });
   } catch (error) {
-    return res.status(500).json({ error: "Post not deleted" });
+    res.status(500).json({ error: "Post not deleted" });
   }
 };
 
@@ -88,10 +90,10 @@ const getPostByBoardId = async (req, res) => {
     if (!posts) {
       return res.status(404).json({ error: "No board found" });
     }
-    return res.status(200).json({ posts: posts });
+    res.status(200).json({ posts: posts });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ error: "Error while getting posts" });
+    res.status(500).json({ error: "Error while getting posts" });
   }
 };
 
