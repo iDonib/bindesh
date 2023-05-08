@@ -2,6 +2,7 @@ const userModel = require("../model/user");
 const orgModel = require("../model/organization");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const SECRET_JWT = process.env.SECRET_JWT;
 
 const adminLogin = async (req, res) => {
   try {
@@ -20,7 +21,7 @@ const adminLogin = async (req, res) => {
               userType: existingUser.userType,
               isLoggedIn: true,
             },
-            process.env.SECRET_JWT,
+            SECRET_JWT,
             { expiresIn: "1d" }
           );
           res.status(200).json({
