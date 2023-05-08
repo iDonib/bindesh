@@ -7,6 +7,7 @@ const {
   getAllUsers,
   deleteUser,
   getAllOrg,
+  updateUserType,
 } = require("../controller/adminController");
 const { isAdmin, isLoggedIn } = require("../middleware/auth");
 const { validateLoginUser } = require("../validators/userValidator");
@@ -20,5 +21,7 @@ adminRouter.get("/get-all-orgs", isLoggedIn, isAdmin, getAllOrg);
 adminRouter.get("/get-all-users", isLoggedIn, isAdmin, getAllUsers);
 
 adminRouter.delete("/delete-user/:id", isLoggedIn, isAdmin, deleteUser);
+
+adminRouter.put("/update-user-type/:id", isLoggedIn, isAdmin, updateUserType);
 
 module.exports = adminRouter;

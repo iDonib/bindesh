@@ -231,17 +231,22 @@ const updateUserProfileById = async (req, res) => {
   try {
     const { fullName, email, password, username, phoneNumber } = req.body;
 
-    hashedPassword = await bcrypt.hash(password, 10);
+    const update = {
+      fullName: fullName,
+      email: email,
+      avatar: req.file?.path,
+      username: username,
+      phoneNumber: phoneNumber,
+    };
+
+    if (password) {
+      hashedPassword = await bcrypt.hash(password, 10);
+      update.password = hashedPassword;
+    }
+
     const user = await userModel.findByIdAndUpdate(
       { _id: req.user.id },
-      {
-        fullName: fullName,
-        email: email,
-        password: hashedPassword,
-        avatar: req.file?.path,
-        username: username,
-        phoneNumber: phoneNumber,
-      },
+      update,
       { new: true }
     );
 
@@ -254,7 +259,7 @@ const updateUserProfileById = async (req, res) => {
       .json({ message: "User updated successfully!", updatedInfo: user });
   } catch (error) {
     console.log(error);
-    res.status(500).json("Error updating user profile");
+    res.status(500).json({ error: "Error updating user profile" });
   }
 };
 
