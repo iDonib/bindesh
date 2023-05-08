@@ -17,8 +17,8 @@ adminRouter.get("/adminOnly", isLoggedIn, isAdmin, onlyAdmin);
 
 adminRouter.get("/get-all-orgs", isLoggedIn, isAdmin, getAllOrg);
 
-adminRouter.get("/allUsers", isLoggedIn, isAdmin, getAllUsers);
+adminRouter.get("/get-all-users", isLoggedIn, isAdmin, getAllUsers);
 
-adminRouter.delete("/deleteUser/:id", isLoggedIn, isAdmin, deleteUser);
+adminRouter.delete("/delete-user/:id", isLoggedIn, isAdmin, deleteUser);
 
 module.exports = adminRouter;
