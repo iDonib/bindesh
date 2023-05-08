@@ -12,7 +12,7 @@ const isPostOwner = async (req, res, next) => {
       model: boardModel,
       select: "_id organization",
     });
-    console.log(post);
+    // console.log(post);
     const orgUser = await orgUserModel.findOne({
       orgId: post.board.organization,
       userId: req.user.id,
@@ -21,11 +21,10 @@ const isPostOwner = async (req, res, next) => {
     if (orgUser && orgUser.role.toString() === "admin") {
       return next();
     }
+
     if (post.createdBy.toString() === req.user.id.toString()) {
       return next();
-    } else {
-      return res.status(400).json({ error: "You are not authorized" });
-    }
+    } else return res.status(400).json({ error: "You are not authorized" });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Something went wrong!" });

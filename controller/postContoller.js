@@ -50,6 +50,7 @@ const updatePost = async (req, res) => {
       },
       { new: true }
     );
+    console.log(post);
     if (!post) {
       return res.status(404).json({ error: "Post not found" });
     }
