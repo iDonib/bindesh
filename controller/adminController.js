@@ -95,7 +95,7 @@ const updateUserType = async (req, res) => {
       {
         userType: userType,
       },
-      { new: true }
+      { new: true, runValidators: true, context: "query" }
     );
     console.log(user);
 
