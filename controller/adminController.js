@@ -47,6 +47,33 @@ const onlyAdmin = async (req, res) => {
   return res.status(200).json({ message: "Wow I am admin" });
 };
 
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await userModel.find();
+    if (!users) {
+      return res.status(404).json({ error: "No user found" });
+    }
+    res.status(200).json({ message: "All users", users });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error while getting users" });
+  }
+};
+
+// delete user in admin dashboard
+const deleteUser = async (req, res) => {
+  try {
+    const user = await userModel.findByIdAndDelete(req.params.id);
+    if (!user) {
+      return res.status(404).json({ error: "No user found" });
+    }
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error while deleting user" });
+  }
+};
+
 const getAllOrg = async (req, res) => {
   try {
     const org = await orgModel.find();
@@ -60,4 +87,4 @@ const getAllOrg = async (req, res) => {
   }
 };
 
-module.exports = { adminLogin, onlyAdmin, getAllOrg };
+module.exports = { adminLogin, onlyAdmin, getAllOrg, getAllUsers, deleteUser };
