@@ -1,4 +1,5 @@
 const userModel = require("../model/user");
+const orgModel = require("../model/organization");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const SECRET_JWT = process.env.SECRET_JWT;
@@ -23,17 +24,17 @@ const adminLogin = async (req, res) => {
             SECRET_JWT,
             { expiresIn: "1d" }
           );
-          res
-            .status(200)
-            .json({
-              message: "Admin login success",
-              admin: existingUser,
-              token: token,
-            });
+          res.status(200).json({
+            message: "Admin login success",
+            admin: existingUser,
+            token: token,
+          });
         }
       } else {
         return res.status(500).json({ error: "Invalid credentials" });
       }
+    } else {
+      return res.status(404).json({ error: "User not found with this email" });
     }
   } catch (error) {
     console.log(error);
@@ -46,33 +47,17 @@ const onlyAdmin = async (req, res) => {
   return res.status(200).json({ message: "Wow I am admin" });
 };
 
-// get all users in admin dashboard
-const getAllUsers = async (req, res) => {
+const getAllOrg = async (req, res) => {
   try {
-    const users = await userModel.find({ userType: "user" });
-    if (!users) {
-      return res.status(404).json({ error: "No user found" });
+    const org = await orgModel.find();
+    if (!org) {
+      return res.status(404).json({ error: "Organization not found" });
     }
-    res.status(200).json({ message: "All users", users });
+    res.status(200).json({ message: "Getting org success", orgs: org });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Error while getting users" });
+    res.status(500).json({ error: "Error while getting orgs" });
   }
 };
 
-// delete user in admin dashboard
-const deleteUser = async (req, res) => {
-  try {
-    const user = await userModel.findById(req.params.id);
-    if (!user) {
-      return res.status(404).json({ error: "No user found" });
-    }
-    await user.remove();
-    res.status(200).json({ message: "User deleted successfully" });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Error while deleting user" });
-  }
-};
-
-module.exports = { adminLogin, onlyAdmin, getAllUsers, deleteUser };
+module.exports = { adminLogin, onlyAdmin, getAllOrg };

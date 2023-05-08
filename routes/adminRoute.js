@@ -6,14 +6,16 @@ const {
   onlyAdmin,
   getAllUsers,
   deleteUser,
+  getAllOrg,
 } = require("../controller/adminController");
-const { isAdmin } = require("../middleware/auth");
-const { isLoggedIn } = require("../middleware/auth");
+const { isAdmin, isLoggedIn } = require("../middleware/auth");
 const { validateLoginUser } = require("../validators/userValidator");
 
 adminRouter.post("/login", validateLoginUser, adminLogin);
 
-adminRouter.get("/adminOnly", isAdmin, onlyAdmin);
+adminRouter.get("/adminOnly", isLoggedIn, isAdmin, onlyAdmin);
+
+adminRouter.get("/get-all-orgs", isLoggedIn, isAdmin, getAllOrg);
 
 adminRouter.get("/allUsers", isLoggedIn, isAdmin, getAllUsers);
 
