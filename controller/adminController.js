@@ -87,4 +87,34 @@ const getAllOrg = async (req, res) => {
   }
 };
 
-module.exports = { adminLogin, onlyAdmin, getAllOrg, getAllUsers, deleteUser };
+const updateUserType = async (req, res) => {
+  const { userType } = req.body;
+  try {
+    const user = await userModel.findByIdAndUpdate(
+      req.params.id,
+      {
+        userType: userType,
+      },
+      { new: true, runValidators: true, context: "query" }
+    );
+    console.log(user);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res
+      .status(200)
+      .json({ message: "User type updated successfully", user: user });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error while updating user type" });
+  }
+};
+module.exports = {
+  adminLogin,
+  onlyAdmin,
+  getAllOrg,
+  getAllUsers,
+  deleteUser,
+  updateUserType,
+};
