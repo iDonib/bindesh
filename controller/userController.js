@@ -2,6 +2,9 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
+const transporter = require("../helper/transporterHelper");
+const sendVerifyEmail = require("../helper/sendVerifyEmailHelper");
+
 // Model Schema
 const userModel = require("../model/user");
 const orgModel = require("../model/organization");
@@ -10,39 +13,12 @@ require("dotenv").config();
 
 const SECRET_JWT = process.env.SECRET_JWT;
 
-const nodemailer = require("nodemailer");
-
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.EMAIL,
-    pass: process.env.PASSWORD,
-  },
-  tls: {
-    rejectUnauthorized: false,
-  },
-});
-
 // Register User
 const registerUser = async (req, res) => {
   //data from req
   const { fullName, username, email, userType, password, phoneNumber } =
     req.body;
-  const sendVerifyEmail = async (name, email, userId) => {
-    try {
-      const mailOptions = {
-        from: "Bindesh",
-        to: "james1415161718s@gmail.com",
-        subject: "Verify your email",
-        html: `<h1>Hi ${name}</h1><br><p>Click this link to verify your email <a href="localhost:5000/api/user/emailVerify?id=${userId}">Click here</a></p>`,
-      };
 
-      console.log(mailOptions.html);
-      await transporter.sendMail(mailOptions);
-    } catch (error) {
-      console.error(error);
-    }
-  };
   try {
     // Checking for existing user
     const existingUser = await userModel.findOne({
@@ -72,8 +48,10 @@ const registerUser = async (req, res) => {
       phoneNumber: phoneNumber,
     });
 
+    //generating token for registered user
     const token = jwt.sign({ email: email, id: newUser._id }, SECRET_JWT);
 
+    //sending email for verification with helper function
     sendVerifyEmail(fullName, email, newUser._id);
 
     return res.status(200).json({
@@ -123,7 +101,6 @@ const loginUser = async (req, res) => {
     }
 
     // check password
-
     const matchPassword = await bcrypt.compare(password, existingUser.password);
 
     if (!matchPassword) {
@@ -181,7 +158,7 @@ const forgotPassword = async (req, res) => {
       text: `Your OTP is: ${otp}`,
     };
 
-    await transporter.sendMail(mailOptions, (error, info) => {
+    transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         console.log(error);
         return res.status(500).json({ error: "Internal server error" });
