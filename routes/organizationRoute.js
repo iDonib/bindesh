@@ -37,7 +37,7 @@ organizationRoute.get("/get-all-organizations", getAllOrganization);
 
 // get all organizations by user id
 organizationRoute.get(
-  "/get-all-organizations-by-user/:id",
+  "/get-all-organizations-by-user",
   isLoggedIn,
   getAllOrgByUser
 );
