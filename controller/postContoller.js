@@ -87,7 +87,6 @@ const getPostByBoardId = async (req, res) => {
   try {
     const posts = await postModel.find({ board: req.params.boardId });
     console.log(posts);
-
     if (!posts) {
       return res.status(404).json({ error: "No board found" });
     }
@@ -98,9 +97,24 @@ const getPostByBoardId = async (req, res) => {
   }
 };
 
+// get specific post by id
+const getPostById = async (req, res) => {
+  try {
+    const post = await postModel.findById(req.params.id);
+    if (!post) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+    res.status(200).json({ post: post });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error while getting post" });
+  }
+};
+
 module.exports = {
   createPost,
   updatePost,
   deletePost,
   getPostByBoardId,
+  getPostById,
 };
