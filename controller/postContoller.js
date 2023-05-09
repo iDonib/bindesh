@@ -1,5 +1,6 @@
 const postModel = require("../model/post");
 const boardModel = require("../model/board");
+const userModel = require("../model/user");
 
 // create post
 const createPost = async (req, res) => {
@@ -95,6 +96,33 @@ const getPostByBoardId = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error while getting posts" });
+  }
+};
+
+const increaseVote = async (req, res) => {
+  try {
+    const { vote } = req.body;
+    const post = await postModel.findById(req.params.id);
+    if (!post) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    const user = await userModel.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    if (post.vote.includes(user._id)) {
+      return res.status(400).json({ error: "You have already voted" });
+    }
+
+    post.vote = post.vote + 1;
+    post.vote.push(user._id);
+    await post.save();
+    res.status(200).json({ message: "Vote added successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error while adding vote" });
   }
 };
 
