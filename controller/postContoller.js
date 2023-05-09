@@ -99,30 +99,28 @@ const getPostByBoardId = async (req, res) => {
   }
 };
 
-const increaseVote = async (req, res) => {
+const castVote = async (req, res) => {
   try {
-    const { vote } = req.body;
-    const post = await postModel.findById(req.params.id);
+    // const { vote } = req.body;
+    const post = await postModel.findById(req.params.postId);
     if (!post) {
       return res.status(404).json({ error: "Post not found" });
     }
 
-    const user = await userModel.findById(req.user.id);
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    if (post.vote.includes(user._id)) {
+    if (post.votedBy.includes(req.user.id)) {
       return res.status(400).json({ error: "You have already voted" });
     }
 
     post.vote = post.vote + 1;
-    post.vote.push(user._id);
+    post.votedBy.push(req.user.id);
+
     await post.save();
-    res.status(200).json({ message: "Vote added successfully" });
+    res
+      .status(200)
+      .json({ message: "Vote added successfully", votes: post.vote });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Error while adding vote" });
+    res.status(500).json({ error: "Error while casting vote" });
   }
 };
 
@@ -131,4 +129,5 @@ module.exports = {
   updatePost,
   deletePost,
   getPostByBoardId,
+  castVote,
 };
