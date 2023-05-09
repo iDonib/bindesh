@@ -4,6 +4,7 @@ const {
   updatePost,
   deletePost,
   getPostByBoardId,
+  castVote,
   getPostById,
 } = require("../controller/postContoller");
 const { validatePost } = require("../validators/postValidator");
@@ -36,6 +37,8 @@ postRoute.put(
 postRoute.delete("/delete-post/:id", deletePost);
 
 postRoute.get("/get-post/board/:boardId", getPostByBoardId);
+
+postRoute.post("/cast-vote/:postId", isLoggedIn, castVote);
 
 postRoute.get("/get-post/:id", getPostById);
 

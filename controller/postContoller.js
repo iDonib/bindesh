@@ -1,5 +1,6 @@
 const postModel = require("../model/post");
 const boardModel = require("../model/board");
+const userModel = require("../model/user");
 
 // create post
 const createPost = async (req, res) => {
@@ -97,6 +98,31 @@ const getPostByBoardId = async (req, res) => {
   }
 };
 
+const castVote = async (req, res) => {
+  try {
+    // const { vote } = req.body;
+    const post = await postModel.findById(req.params.postId);
+    if (!post) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    if (post.votedBy.includes(req.user.id)) {
+      return res.status(400).json({ error: "You have already voted" });
+    }
+
+    post.vote = post.vote + 1;
+    post.votedBy.push(req.user.id);
+
+    await post.save();
+    res
+      .status(200)
+      .json({ message: "Vote added successfully", votes: post.vote });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error while casting vote" });
+  }
+};
+
 // get specific post by id
 const getPostById = async (req, res) => {
   try {
@@ -116,5 +142,6 @@ module.exports = {
   updatePost,
   deletePost,
   getPostByBoardId,
+  castVote,
   getPostById,
 };
