@@ -13,6 +13,7 @@ const createOrganization = async (req, res) => {
       photo: req.files?.[1]?.path,
       phoneNumber,
       address,
+      createdBy: req.user.id,
       // orgUsers: orgAdmin._id,
     });
     await organization.save();
@@ -79,7 +80,10 @@ const deleteOrganization = async (req, res) => {
 // get all organizations
 const getAllOrganization = async (req, res) => {
   try {
-    const organizations = await organizationModel.find({}, "-_id name website");
+    const organizations = await organizationModel.find(
+      {},
+      "-_id name website createdBy"
+    );
     if (!organizations) {
       return res.status(404).json({ error: "No organization found" });
     }
@@ -93,11 +97,11 @@ const getAllOrganization = async (req, res) => {
 // get all organizations created by single user
 const getAllOrgByUser = async (req, res) => {
   try {
-    const org = await organizationModel.find({ admin: req.user.id });
+    const org = await organizationModel.find({ createdBy: req.user.id });
     if (!org) {
       return res.status(404).json({ error: "No organization found" });
     }
-    res.status(200).json({ message: "All organizations", org });
+    res.status(200).json({ message: "All organizations", org: org });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error while getting organizations" });

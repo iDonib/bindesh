@@ -27,6 +27,10 @@ const organizationSchema = new mongoose.Schema(
     address: {
       type: String,
     },
+    createdBy: {
+      type: mongoose.Schema.ObjectId,
+      ref: "User",
+    },
   },
   {
     timestamps: true,
