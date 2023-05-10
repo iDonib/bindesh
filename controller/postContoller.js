@@ -128,8 +128,13 @@ const getPostById = async (req, res) => {
   try {
     const post = await postModel.findById(req.params.id).populate({
       path: "comments",
-      // model: Comment,
+      populate: {
+        path: "createdBy",
+        model: userModel,
+        select: "username avatar",
+      },
     });
+
     if (!post) {
       return res.status(404).json({ error: "Post not found" });
     }
