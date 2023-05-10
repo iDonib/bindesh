@@ -126,7 +126,10 @@ const castVote = async (req, res) => {
 // get specific post by id
 const getPostById = async (req, res) => {
   try {
-    const post = await postModel.findById(req.params.id);
+    const post = await postModel.findById(req.params.id).populate({
+      path: "comments",
+      // model: Comment,
+    });
     if (!post) {
       return res.status(404).json({ error: "Post not found" });
     }
