@@ -7,6 +7,7 @@ const {
 } = require("../controller/commentController");
 const { validateComment } = require("../validators/commentValidator");
 const { isLoggedIn } = require("../middleware/auth");
+const { isCommentOwner } = require("../middleware/commentMiddleware");
 
 const commentRoute = express.Router();
 
@@ -17,9 +18,20 @@ commentRoute.post(
   createComment
 );
 
-commentRoute.patch("/update-comment/:id", validateComment, updateComment);
+commentRoute.patch(
+  "/update-comment/:id",
+  isLoggedIn,
+  isCommentOwner,
+  validateComment,
+  updateComment
+);
 
-commentRoute.delete("/delete-comment/:id", deleteCommentById);
+commentRoute.delete(
+  "/delete-comment/:id",
+  isLoggedIn,
+  isCommentOwner,
+  deleteCommentById
+);
 
 commentRoute.get("/get-all-comments-of-post/:id", getAllCommentsOfPost);
 
