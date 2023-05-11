@@ -257,16 +257,16 @@ const deleteUser = async (req, res) => {
   }
 };
 
-const getAllUsers = async (req, res) => {
+const getUserById = async (req, res) => {
   try {
-    const users = await userModel.find({}, " username email userType");
-    if (!users) {
-      res.status(400).json({ message: "No users found!" });
+    const user = await userModel.findById(req.user.id);
+    if (!user) {
+      res.status(400).json({ message: "No user found!" });
     }
-    res.status(200).json({ users: users });
+    res.status(200).json({ user: user });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Error while getting all users" });
+    res.status(500).json({ error: "Error while getting user" });
   }
 };
 
@@ -278,5 +278,5 @@ module.exports = {
   resetPassword,
   updateUserProfileById,
   deleteUser,
-  getAllUsers,
+  getUserById,
 };
