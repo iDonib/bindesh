@@ -19,6 +19,7 @@ const {
   validateRegisterUser,
   validateLoginUser,
   validateResetPassword,
+  validateUpdateUser,
 } = require("../validators/userValidator");
 
 const userRoute = express.Router();
@@ -179,6 +180,7 @@ userRoute.patch(
   "/update-user",
   isLoggedIn,
   upload.single("file"),
+  validateUpdateUser,
   updateUserProfileById
 );
 
