@@ -22,6 +22,6 @@ adminRouter.get("/get-all-users", isLoggedIn, isAdmin, getAllUsers);
 
 adminRouter.delete("/delete-user/:id", isLoggedIn, isAdmin, deleteUser);
 
-adminRouter.put("/update-user-type/:id", isLoggedIn, isAdmin, updateUserType);
+adminRouter.patch("/update-user-type/:id", isLoggedIn, isAdmin, updateUserType);
 
 module.exports = adminRouter;

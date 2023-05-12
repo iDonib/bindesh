@@ -19,6 +19,7 @@ const {
   validateRegisterUser,
   validateLoginUser,
   validateResetPassword,
+  validateUpdateUser,
 } = require("../validators/userValidator");
 
 const userRoute = express.Router();
@@ -175,10 +176,11 @@ userRoute.post("/reset-password", validateResetPassword, resetPassword);
  *         description: User with this ID not found
  */
 
-userRoute.put(
+userRoute.patch(
   "/update-user",
   isLoggedIn,
   upload.single("file"),
+  validateUpdateUser,
   updateUserProfileById
 );
 
