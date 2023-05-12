@@ -13,7 +13,12 @@ const { isOrgAdmin } = require("../middleware/orgUserMiddleware");
 const orgUserRoute = express.Router();
 
 orgUserRoute.post("/add/:id", isLoggedIn, isOrgAdmin, addOrgUser);
-orgUserRoute.put("/update/:id/:userId", isLoggedIn, isOrgAdmin, updateOrgUser);
+orgUserRoute.patch(
+  "/update/:id/:userId",
+  isLoggedIn,
+  isOrgAdmin,
+  updateOrgUser
+);
 orgUserRoute.delete(
   "/delete/:id/:userId",
   isLoggedIn,
