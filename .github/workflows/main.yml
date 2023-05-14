@@ -2,7 +2,11 @@ name: orgFeeder
 run-name: ${{github.actor}} is running Github Actions...
 on: [pull_request, push]
 env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  SECRET_JWT: ${{secrets.SECRET_JWT}}
+  EMAIL: ${{secrets.EMAIL}}
+  PASSWORD: ${{secrets.PASSWORD}}
+  MONGO_URI: ${{secrets.MONGO_URI}}
+  MONGO_TEST_URI: ${{secrets.MONGO_TEST_URI}}
 jobs:
   run-jest:
     runs-on: ubuntu-latest
@@ -10,4 +14,5 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
       - run: npm install
-      - run: npm test organization.test.js
+      - run: echo ${{env.MONGO_TEST_URI}}
+      - run: npm test user.test.js
