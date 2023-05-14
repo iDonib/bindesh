@@ -1,5 +1,5 @@
 name: orgFeeder
-run-name: ${{github.actor}} is running Github Actions
+run-name: ${{github.actor}} is running Github Actions...
 on: [pull_request, push]
 env:
   SECRET_JWT: ${{secrets.SECRET_JWT}}
