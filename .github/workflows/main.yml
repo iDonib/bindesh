@@ -2,12 +2,7 @@ name: orgFeeder
 run-name: ${{github.actor}} is running Github Actions...
 on: [pull_request, push]
 env:
-  MONGO_URI: "mongodb+srv://admin:admin@bindeshcluster.uev3zzw.mongodb.net/test"
-  SECRET_JWT: "MAN CITY"
-  EMAIL: on.screen.keyboards@gmail.com
-  PASSWORD: tjeekcazmvpewaku
-  EMAIL_SERVICE: "Email Service"
-  MONGO_TEST_URI: "mongodb+srv://admin:admin@bindeshcluster.uev3zzw.mongodb.net/jest"
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
   run-jest:
     runs-on: ubuntu-latest
