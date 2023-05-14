@@ -29,7 +29,7 @@ describe("Tests for user: ", () => {
     expect(response.statusCode).toBe(200);
   }, 600000);
 
-  it("Forgot password: ", async () => {
+  it.only("Forgot password: ", async () => {
     const response = await request(app)
       .post("/orgFeeder/api/user/forgot-password")
       .send({
@@ -62,7 +62,7 @@ describe("Tests for user: ", () => {
   beforeEach(async () => {
     //perform login
     const response = await request(app).post("/orgFeeder/api/user/login").send({
-      email: "tester@test.com",
+      email: "jest1@jest1.com",
       password: "hacker",
     });
     token = response.body.token;
