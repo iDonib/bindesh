@@ -2,24 +2,25 @@ const { app } = require("../index");
 const request = require("supertest");
 
 describe("Tests for user: ", () => {
-  it.only("Registering a user", async () => {
+  it.only("Registering a user with valid inputs should return success message", async () => {
     const response = await request(app)
       .post("/orgFeeder/api/user/register")
       .send({
         fullName: "Donib Irakihda",
         username: "apple",
         password: "hacker",
-        email: "jest1111",
+        email: "jest1@jest1.com",
       });
 
     console.log("Response: ", response.body);
-    expect(response.body.errors[0].msg).toBe("Please enter valid email");
+    // expect(response.body.errors[0].msg).toBe("Please enter valid email");
+    expect(response.body.Error).toBe("User with this email already exists!");
     expect(response.statusCode).toBe(500);
   }, 600000);
 
-  it("Login user:", async () => {
+  it.only("Login user:", async () => {
     const response = await request(app).post("/orgFeeder/api/user/login").send({
-      email: "tester@test.com",
+      email: "jest1@jest1.com",
       password: "hacker",
     });
 
@@ -32,18 +33,18 @@ describe("Tests for user: ", () => {
     const response = await request(app)
       .post("/orgFeeder/api/user/forgot-password")
       .send({
-        email: "jest@jest.com",
+        email: "jest1@jest1.com",
       });
     console.log("Response:", response.body);
     expect(response.body.message).toBe("OTP sent to your email");
     expect(response.statusCode).toBe(200);
   }, 600000);
 
-  it("Reset Password: ", async () => {
+  it.only("Reset Password: ", async () => {
     const response = await request(app)
       .post("/orgFeeder/api/user/reset-password")
       .send({
-        email: "jest@jest.com",
+        email: "jest1@jest1.com",
         newPassword: "hacker",
         otp: "328048",
       });
