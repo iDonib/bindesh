@@ -2,11 +2,11 @@ name: orgFeeder
 run-name: ${{github.actor}} is running Github Actions
 on: [pull_request, push]
 env:
-  SECRET_JWT: ${{env.SECRET_JWT}}
-  EMAIL: ${{env.EMAIL}}
-  PASSWORD: ${{env.PASSWORD}}
-  MONGO_URI: ${{env.MONGO_URI}}
-  MONGO_TEST_URI: ${{env.MONGO_TEST_URI}}
+  SECRET_JWT: ${{secrets.SECRET_JWT}}
+  EMAIL: ${{secrets.EMAIL}}
+  PASSWORD: ${{secrets.PASSWORD}}
+  MONGO_URI: ${{secrets.MONGO_URI}}
+  MONGO_TEST_URI: ${{secrets.MONGO_TEST_URI}}
 jobs:
   run-jest:
     runs-on: ubuntu-latest
