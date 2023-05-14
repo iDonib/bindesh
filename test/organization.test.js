@@ -5,7 +5,7 @@ require("dotenv").config();
 let token;
 beforeAll(async () => {
   const response = await request(app).post("/orgFeeder/api/user/login").send({
-    email: "jest11@jest11.com",
+    email: "jest1@jest1.com",
     password: "hacker",
   });
   token = response.body.token;
