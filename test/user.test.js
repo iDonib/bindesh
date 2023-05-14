@@ -19,7 +19,7 @@ describe("Tests for user: ", () => {
 
   it.only("Login user:", async () => {
     const response = await request(app).post("/orgFeeder/api/user/login").send({
-      email: "jest@jest.com",
+      email: "jest11@jest11.com",
       password: "hacker",
     });
 
