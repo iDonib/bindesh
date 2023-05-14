@@ -1,4 +1,5 @@
 const { app } = require("../index");
+app.listen(8000);
 const request = require("supertest");
 require("dotenv").config();
 
