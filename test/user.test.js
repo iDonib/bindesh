@@ -2,7 +2,7 @@ const { app } = require("../index");
 const request = require("supertest");
 
 describe("Tests for user: ", () => {
-  it.only("Registering a user", async () => {
+  it("Registering a user", async () => {
     const response = await request(app)
       .post("/orgFeeder/api/user/register")
       .send({
@@ -17,7 +17,7 @@ describe("Tests for user: ", () => {
     expect(response.statusCode).toBe(500);
   }, 600000);
 
-  it("Login user:", async () => {
+  it.only("Login user:", async () => {
     const response = await request(app).post("/orgFeeder/api/user/login").send({
       email: "jest@jest.com",
       password: "hacker",
