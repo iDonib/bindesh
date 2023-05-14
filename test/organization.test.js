@@ -11,7 +11,7 @@ beforeAll(async () => {
   token = response.body.token;
 }, 600000);
 describe("Tests for organization: ", () => {
-  it("Creating an organization", async () => {
+  it.only("Creating an organization", async () => {
     const response = await request(app)
       .post("/orgFeeder/api/organization/create-organization")
       .set("Authorization", `Bearer ${token}`)

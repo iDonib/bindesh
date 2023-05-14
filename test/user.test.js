@@ -2,7 +2,7 @@ const { app } = require("../index");
 const request = require("supertest");
 
 describe("Tests for user: ", () => {
-  it("Registering a user", async () => {
+  it.only("Registering a user", async () => {
     const response = await request(app)
       .post("/orgFeeder/api/user/register")
       .send({
@@ -81,7 +81,7 @@ describe("Tests for user: ", () => {
     expect(res.body.message).toBe("User updated successfully!");
   }, 600000);
 
-  it.only("Test for delete user", async () => {
+  it("Test for delete user", async () => {
     const res = await request(app)
       .delete("/orgFeeder/api/user/delete-user")
       .set("Authorization", `Bearer ${token}`);

@@ -1,13 +1,11 @@
 name: orgFeeder
-run-name: ${{ github.actor }} is GitHub Actions
+run-name: ${{github.actor}} is running Github Actions
 on: [push]
 jobs:
-  check-bats-version:
+  run-jest:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
-        with:
-          node-version: "14"
       - run: npm install
-      - run: npm test
+      - run: npm test organization.test.js
