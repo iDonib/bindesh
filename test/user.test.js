@@ -2,14 +2,14 @@ const { app } = require("../index");
 const request = require("supertest");
 
 describe("Tests for user: ", () => {
-  it("Registering a user", async () => {
+  it.only("Registering a user", async () => {
     const response = await request(app)
       .post("/orgFeeder/api/user/register")
       .send({
         fullName: "Donib Irakihda",
         username: "apple",
         password: "hacker",
-        email: "jest1@jest",
+        email: "jest1111",
       });
 
     console.log("Response: ", response.body);
@@ -19,7 +19,7 @@ describe("Tests for user: ", () => {
 
   it("Login user:", async () => {
     const response = await request(app).post("/orgFeeder/api/user/login").send({
-      email: "jest@jest.com",
+      email: "tester@test.com",
       password: "hacker",
     });
 
@@ -58,10 +58,10 @@ describe("Tests for user: ", () => {
   }, 600000);
 
   let token;
-  beforeAll(async () => {
+  beforeEach(async () => {
     //perform login
     const response = await request(app).post("/orgFeeder/api/user/login").send({
-      email: "jest@jest.com",
+      email: "tester@test.com",
       password: "hacker",
     });
     token = response.body.token;
@@ -81,7 +81,7 @@ describe("Tests for user: ", () => {
     expect(res.body.message).toBe("User updated successfully!");
   }, 600000);
 
-  it.only("Test for delete user", async () => {
+  it("Test for delete user", async () => {
     const res = await request(app)
       .delete("/orgFeeder/api/user/delete-user")
       .set("Authorization", `Bearer ${token}`);
