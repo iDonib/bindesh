@@ -15,4 +15,4 @@ jobs:
       - uses: actions/setup-node@v3
       - run: npm install
       - run: echo ${{secrets.MONGO_TEST_URI}}
-      - run: npm test user.test.js
+      - run: npm test
