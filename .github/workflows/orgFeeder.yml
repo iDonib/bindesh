@@ -7,11 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Set up Git secrets
         run: |
           git secrets --scan -r HEAD
-        
+
       - name: Set up environment variables
         env:
           SECRET_JWT: ${{secrets.SECRET_JWT}}
@@ -19,8 +19,8 @@ jobs:
           PASSWORD: ${{secrets.PASSWORD}}
           MONGO_URI: ${{secrets.MONGO_URI}}
           MONGO_TEST_URI: ${{secrets.MONGO_TEST_URI}}
-          
+
       - uses: actions/setup-node@v3
       - run: npm install
       - run: echo ${{env.MONGO_TEST_URI}}
-      - run: npm test 
+      - run: npm test
