@@ -21,4 +21,4 @@ jobs:
           node-version: "14"
           jest-version: "^29.5.0"
       - run: npm install jest
-      - run: jest user.test.js
+      - run: npm test
