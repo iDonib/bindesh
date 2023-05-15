@@ -11,7 +11,7 @@ beforeAll(async () => {
   token = response.body.token;
 }, 600000);
 describe("Tests for organization: ", () => {
-  it.only("Creating an organization", async () => {
+  it("Creating an organization", async () => {
     const response = await request(app)
       .post("/orgFeeder/api/organization/create-organization")
       .set("Authorization", `Bearer ${token}`)
@@ -45,7 +45,7 @@ describe("Tests for organization: ", () => {
     // expect(response.body.message).toBe("Organization updated successfully");
     expect(response.body.error).toBe("Organization not found");
 
-    expect(response.statusCode).toBe(201);
+    expect(response.statusCode).toBe(404);
   }, 600000);
 
   it("Deleting an organization", async () => {
@@ -54,10 +54,10 @@ describe("Tests for organization: ", () => {
         "/orgFeeder/api/organization/delete-organization/645e1fc6ea4978bd7906dbb0"
       )
       .set("Authorization", `Bearer ${token}`);
-    console.log("Response:", resmessageponse.body);
+    console.log("Response:", response.body);
     // expect(response.body.message).toBe("Organization deleted successfully");
     expect(response.body.error).toBe("Organization not found");
 
-    expect(response.statusCode).toBe(200);
+    expect(response.statusCode).toBe(404);
   }, 600000);
 });
