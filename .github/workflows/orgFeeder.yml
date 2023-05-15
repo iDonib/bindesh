@@ -10,7 +10,7 @@ jobs:
       - uses: actions/setup-node@v3
       - run: npm install
       - name: run tests
-        run: npm test user.test.js
+        run: npm test
         env:
           SECRET_JWT: ${{secrets.SECRET_JWT}}
           EMAIL: ${{secrets.EMAIL}}
