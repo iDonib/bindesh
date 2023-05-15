@@ -9,6 +9,7 @@ env:
 jobs:
   test:
     runs-on: ubuntu-latest
+    environment: orgFeeder
     strategy:
       matrix:
         node-version: [14.x]
