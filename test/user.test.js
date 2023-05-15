@@ -29,7 +29,7 @@ describe("Tests for user: ", () => {
     expect(response.statusCode).toBe(200);
   }, 600000);
 
-  it.only("Forgot password: ", async () => {
+  it("Forgot password: ", async () => {
     const response = await request(app)
       .post("/orgFeeder/api/user/forgot-password")
       .send({
@@ -40,7 +40,7 @@ describe("Tests for user: ", () => {
     expect(response.statusCode).toBe(200);
   }, 600000);
 
-  it.only("Reset Password: ", async () => {
+  it("Reset Password: ", async () => {
     const response = await request(app)
       .post("/orgFeeder/api/user/reset-password")
       .send({
