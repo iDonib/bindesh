@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const morgan = require("morgan");
 require("dotenv").config();
+const path = require("path");
 
 // morgan for logging
 app.use(morgan("dev"));
