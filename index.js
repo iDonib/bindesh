@@ -11,12 +11,14 @@ app.use(morgan("dev"));
 require("./config/database");
 app.use(express.json());
 // cors
+app.use(cors());
+
 const corsOption = {
   origin: [
     "https://org-feeder-front.vercel.app/"
   ],
 };
-app.use(require("cors")(corsOption));
+// app.use(require("cors")(corsOption));
 
 //cors policy
 app.use((req, res, next) => {
