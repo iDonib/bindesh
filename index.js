@@ -3,6 +3,7 @@ const app = express();
 const morgan = require("morgan");
 require("dotenv").config();
 const path = require("path");
+const cors = require("cors");
 
 // morgan for logging
 app.use(morgan("dev"));
@@ -14,9 +15,7 @@ app.use(express.json());
 app.use(cors());
 
 const corsOption = {
-  origin: [
-    "https://org-feeder-front.vercel.app/"
-  ],
+  origin: ["https://org-feeder-front.vercel.app/"],
 };
 // app.use(require("cors")(corsOption));
 
