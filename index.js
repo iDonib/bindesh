@@ -13,8 +13,7 @@ app.use(express.json());
 // cors
 const corsOption = {
   origin: [
-    "http://localhost:5173",
-    "https://org-feeder-front.vercel.app/",
+    "https://org-feeder-front.vercel.app/"
   ],
 };
 app.use(require("cors")(corsOption));
