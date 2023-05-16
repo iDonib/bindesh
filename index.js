@@ -18,7 +18,7 @@ const corsOption = {
 };
 app.use(require("cors")(corsOption));
 
-/cors policy
+//cors policy
 app.use((req, res, next) => {
   const origin = req.headers.origin;
   if (corsOption.origin.includes(origin)) {
