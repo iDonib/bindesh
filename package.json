@@ -4,9 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-
     "test": "jest --forceExit",
-
     "dev": "nodemon index.js"
   },
   "keywords": [],
