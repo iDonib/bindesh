@@ -110,6 +110,7 @@ const updateUserType = async (req, res) => {
     res.status(500).json({ error: "Error while updating user type" });
   }
 };
+
 module.exports = {
   adminLogin,
   onlyAdmin,
