@@ -14,7 +14,7 @@ app.use(express.json());
 const corsOption = {
   origin: [
     "http://localhost:5173",
-    "https://org-feeder-front-n4wsnzbds-donib-irakihda.vercel.app/",
+    "https://org-feeder-front.vercel.app/",
   ],
 };
 app.use(require("cors")(corsOption));
