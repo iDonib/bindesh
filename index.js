@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(cors());
 
 const corsOption = {
-  origin: ["https://org-feeder-front.vercel.app/"],
+  origin: ["https://org-feeder-front-gules.vercel.app/"],
 };
 // app.use(require("cors")(corsOption));
 
