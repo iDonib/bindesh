@@ -12,7 +12,10 @@ require("./config/database");
 app.use(express.json());
 // cors
 const corsOption = {
-  origin: ["http://localhost:5173"],
+  origin: [
+    "http://localhost:5173",
+    "https://org-feeder-front-n4wsnzbds-donib-irakihda.vercel.app/",
+  ],
 };
 app.use(require("cors")(corsOption));
 // Routes
