@@ -1,6 +1,7 @@
 // schema
 const organizationModel = require("../model/organization");
 const orgUserModel = require("../model/orgUsers");
+const userModel = require("../model/user");
 
 // create organization
 const createOrganization = async (req, res) => {
@@ -80,14 +81,53 @@ const deleteOrganization = async (req, res) => {
 // get all organizations
 const getAllOrganization = async (req, res) => {
   try {
-    const organizations = await organizationModel.find(
-      {},
-      "-_id name website createdBy"
-    );
-    if (!organizations) {
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 10;
+
+    const options = {
+      page: page,
+      limit: limit,
+      select: "-_id name website createdBy",
+      populate: {
+        path: "createdBy",
+        model: userModel,
+        select: "-_id fullName",
+      },
+    };
+    const totalCounts = await organizationModel.countDocuments();
+    const totalPages = Math.ceil(totalCounts / options.limit);
+
+    // const organizations = await organizationModel
+    //   .find({}, "-_id name website createdBy")
+    //   .populate({
+    //     path: "createdBy",
+    //     model: userModel,
+    //     select: "-_id fullName",
+    //   })
+    //   .lean();
+
+    const organizations = await organizationModel.paginate({}, options);
+
+    if (!organizations.docs.length) {
       return res.status(404).json({ error: "No organization found" });
     }
-    res.status(200).json({ message: "All organizations", organizations });
+
+    res.status(200).json({
+      message: "All organizations",
+      organization: organizations.docs,
+      pagination: {
+        totalDocs: organizations.totalDocs,
+        totalPages: totalPages,
+        page: organizations.page,
+        limit: organizations.limit,
+      },
+    });
+
+    // if (!organizations) {
+    //   return res.status(404).json({ error: "No organization found" });
+    // }
+
+    // res.status(200).json({ message: "All organizations", organizations });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error while getting organizations" });
@@ -97,7 +137,13 @@ const getAllOrganization = async (req, res) => {
 // get all organizations created by single user
 const getAllOrgByUser = async (req, res) => {
   try {
-    const org = await organizationModel.find({ createdBy: req.user.id });
+    const org = await organizationModel
+      .find({ createdBy: req.user.id })
+      .populate({
+        path: "createdBy",
+        model: userModel,
+        select: "-_id fullName",
+      });
     if (!org) {
       return res.status(404).json({ error: "No organization found" });
     }
