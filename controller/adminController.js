@@ -49,11 +49,22 @@ const onlyAdmin = async (req, res) => {
 
 const getAllUsers = async (req, res) => {
   try {
-    const users = await userModel.find();
-    if (!users) {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const totalUsers = await userModel.countDocuments();
+
+    const users = await userModel.find().limit(limit);
+
+    if (users.length === 0) {
       return res.status(404).json({ error: "No user found" });
     }
-    res.status(200).json({ message: "All users", users });
+    res.status(200).json({
+      message: "All users",
+      users,
+      currentPage: page,
+      totalPages: Math.ceil(totalUsers / limit),
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error while getting users" });
