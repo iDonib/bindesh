@@ -94,6 +94,8 @@ const getAllOrganization = async (req, res) => {
         select: "-_id fullName",
       },
     };
+    const totalCounts = await organizationModel.countDocuments();
+    const totalPages = Math.ceil(totalCounts / options.limit);
 
     // const organizations = await organizationModel
     //   .find({}, "-_id name website createdBy")
@@ -105,6 +107,7 @@ const getAllOrganization = async (req, res) => {
     //   .lean();
 
     const organizations = await organizationModel.paginate({}, options);
+
     if (!organizations.docs.length) {
       return res.status(404).json({ error: "No organization found" });
     }
@@ -114,7 +117,7 @@ const getAllOrganization = async (req, res) => {
       organization: organizations.docs,
       pagination: {
         totalDocs: organizations.totalDocs,
-        totalPages: organizations.totalPages,
+        totalPages: totalPages,
         page: organizations.page,
         limit: organizations.limit,
       },
