@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const User = require("../model/user");
+const mongoosePaginate = require("mongoose-paginate");
 
 const organizationSchema = new mongoose.Schema(
   {
@@ -37,6 +38,8 @@ const organizationSchema = new mongoose.Schema(
     id: true,
   }
 );
+// Apply plugins
+organizationSchema.plugin(mongoosePaginate);
 
 const Organization = mongoose.model("Organization", organizationSchema);
 module.exports = Organization;
