@@ -21,6 +21,7 @@ const {
   validateResetPassword,
   validateUpdateUser,
 } = require("../validators/userValidator");
+const limiter = require("../helper/rateLimiter");
 
 const userRoute = express.Router();
 
@@ -54,7 +55,7 @@ userRoute.post(
  *       500:
  *         description: Internal server error
  */
-userRoute.post("/login", validateLoginUser, loginUser);
+userRoute.post("/login", limiter, validateLoginUser, loginUser);
 
 // verify email
 /**
