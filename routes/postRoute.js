@@ -27,7 +27,6 @@ postRoute.put(
   "/update-post/:id",
   isLoggedIn,
   upload.single("file"),
-
   isPostOwner,
   validatePost,
   updatePost
