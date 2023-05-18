@@ -15,7 +15,7 @@ routes.use("/admin", adminRoute);
 
 routes.use("/user", userRoute);
 routes.use("/organization", organizationRoute);
-routes.use("/board", boardRoute);
+routes.use("/board", limiter, boardRoute);
 routes.use("/post", limiter, postRoute);
 routes.use("/comment", limiter, commentRoute);
 routes.use("/orgUser", orgUserRoute);
