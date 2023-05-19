@@ -26,7 +26,7 @@
     "supertest": "^6.3.3",
     "swagger-autogen": "^2.23.1",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^4.6.2"
+    "swagger-ui-express": "^4.6.3"
   },
   "devDependencies": {
     "jest": "^29.5.0",

@@ -4,9 +4,8 @@ const doc = {
     title: "My API",
     description: "Description",
   },
-  host: "localhost:8000/orgFeeder/api",
+  host: "localhost:5000/api",
   schemes: ["http"],
-  
 };
 const outputFile = "./swagger-output.json";
 const endpointsFiles = ["./main.route.js"];
