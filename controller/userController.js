@@ -291,6 +291,22 @@ const filterUserByDate = async (req, res) => {
   }
 };
 
+const searchUser = async (req, res) => {
+  try {
+    const searchQuery = req.query.fullName;
+    const regexPattern = new RegExp(searchQuery, "i");
+    const query = { fullName: { $regex: regexPattern } };
+
+    const users = await userModel.find(query).select("fullName email username");
+    res
+      .status(200)
+      .json({ message: `Search result for ${searchQuery} is `, users });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Failed to search user" });
+  }
+};
+
 // search query for user by email
 const searchUserByEmail = async (req, res) => {
   try {
@@ -320,4 +336,5 @@ module.exports = {
   getUserById,
   filterUserByDate,
   searchUserByEmail,
+  searchUser,
 };

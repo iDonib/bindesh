@@ -9,9 +9,9 @@ const {
   resetPassword,
   updateUserProfileById,
   deleteUser,
-  getAllUsers,
   getUserById,
   filterUserByDate,
+  searchUser,
   searchUserByEmail,
 } = require("../controller/userController");
 
@@ -217,6 +217,6 @@ userRoute.get("/get-user-by-id", isLoggedIn, getUserById);
 
 userRoute.get("/filter-user", filterUserByDate);
 
-userRoute.get("/search-user", searchUserByEmail);
-
+userRoute.get("/search-user", searchUser);
+userRoute.get("/search-user-email", searchUserByEmail);
 module.exports = userRoute;
