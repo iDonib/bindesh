@@ -9,9 +9,9 @@ const {
   resetPassword,
   updateUserProfileById,
   deleteUser,
-  getAllUsers,
   getUserById,
   filterUserByDate,
+  searchUser,
 } = require("../controller/userController");
 
 const { isLoggedIn, isAdmin } = require("../middleware/auth");
@@ -215,5 +215,7 @@ userRoute.delete("/delete-user", isLoggedIn, deleteUser);
 userRoute.get("/get-user-by-id", isLoggedIn, getUserById);
 
 userRoute.get("/filter-user", filterUserByDate);
+
+userRoute.get("/search-user", searchUser);
 
 module.exports = userRoute;

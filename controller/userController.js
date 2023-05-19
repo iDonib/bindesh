@@ -281,15 +281,29 @@ const filterUserByDate = async (req, res) => {
       .find(query)
       .select("fullName username email createdAt ");
 
-    res
-      .status(200)
-      .json({
-        message: `All users registered from ${startDate} to ${endDate} are `,
-        filteredUser,
-      });
+    res.status(200).json({
+      message: `All users registered from ${startDate} to ${endDate} are `,
+      filteredUser,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Failed to retrieve filtered users" });
+  }
+};
+
+const searchUser = async (req, res) => {
+  try {
+    const searchQuery = req.query.fullName;
+    const regexPattern = new RegExp(searchQuery, "i");
+    const query = { fullName: { $regex: regexPattern } };
+
+    const users = await userModel.find(query).select("fullName email username");
+    res
+      .status(200)
+      .json({ message: `Search result for ${searchQuery} is `, users });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Failed to search user" });
   }
 };
 module.exports = {
@@ -302,4 +316,5 @@ module.exports = {
   deleteUser,
   getUserById,
   filterUserByDate,
+  searchUser,
 };
