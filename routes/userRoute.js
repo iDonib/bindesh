@@ -12,6 +12,7 @@ const {
   getUserById,
   filterUserByDate,
   searchUser,
+  searchUserByEmail,
 } = require("../controller/userController");
 
 const { isLoggedIn, isAdmin } = require("../middleware/auth");
@@ -217,5 +218,5 @@ userRoute.get("/get-user-by-id", isLoggedIn, getUserById);
 userRoute.get("/filter-user", filterUserByDate);
 
 userRoute.get("/search-user", searchUser);
-
+userRoute.get("/search-user-email", searchUserByEmail);
 module.exports = userRoute;
