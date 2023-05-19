@@ -281,6 +281,9 @@ const filterUserByDate = async (req, res) => {
       .find(query)
       .select("fullName username email createdAt ");
 
+    if (filteredUser.length < 1) {
+      return res.status(404).json({ error: "Users not found" });
+    }
     res.status(200).json({
       message: `All users registered from ${startDate} to ${endDate} are `,
       filteredUser,
@@ -298,9 +301,13 @@ const searchUser = async (req, res) => {
     const query = { fullName: { $regex: regexPattern } };
 
     const users = await userModel.find(query).select("fullName email username");
-    res
-      .status(200)
-      .json({ message: `Search result for ${searchQuery} is `, users });
+    if (users.length > 0) {
+      return res
+        .status(200)
+        .json({ message: `Search result for ${searchQuery} is `, users });
+    } else {
+      return res.status(404).json({ error: "Users not found" });
+    }
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Failed to search user" });
