@@ -47,7 +47,7 @@ const userSchema = new mongoose.Schema(
       default: null,
     },
 
-    phonepNumber: {
+    phoneNumber: {
       type: String,
       min: 8,
     },
