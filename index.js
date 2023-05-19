@@ -5,6 +5,9 @@ require("dotenv").config();
 const path = require("path");
 const cors = require("cors");
 
+const swaggerjsdoc = require("swagger-jsdoc");
+const swaggerui = require("swagger-ui-express");
+
 // morgan for logging
 app.use(morgan("dev"));
 
@@ -22,6 +25,26 @@ const corsOption = {
   ],
 };
 // app.use(require("cors")(corsOption));
+// swagger implementation
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Feedback API",
+      version: "1.0.0",
+      description: "A simple Express Feedback API",
+    },
+    servers: [
+      {
+        url: "http://localhost:5000/orgFeeder/api",
+      },
+    ],
+  },
+  apis: ["./routes/*.js"],
+};
+
+const specs = swaggerjsdoc(options);
+app.use("/orgFeeder/api-docs", swaggerui.serve, swaggerui.setup(specs));
 
 //cors policy
 app.use((req, res, next) => {
@@ -43,6 +66,7 @@ app.use((req, res, next) => {
 
 // Routes
 const routers = require("./main.route");
+const { url } = require("inspector");
 app.use("/orgFeeder/api", routers);
 
 app.get("/", (req, res) => {

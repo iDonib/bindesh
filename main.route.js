@@ -12,7 +12,6 @@ const orgUserRoute = require("./routes/orgUserRoute");
 const limiter = require("./helper/rateLimiter");
 
 routes.use("/admin", adminRoute);
-
 routes.use("/user", userRoute);
 routes.use("/organization", organizationRoute);
 routes.use("/board", limiter, boardRoute);
