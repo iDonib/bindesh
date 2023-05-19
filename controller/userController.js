@@ -269,6 +269,29 @@ const getUserById = async (req, res) => {
     res.status(500).json({ error: "Error while getting user" });
   }
 };
+
+const filterUserByDate = async (req, res) => {
+  try {
+    const startDate = new Date(`${req.query.startDate}T00:00:00.000Z`);
+    const endDate = new Date(`${req.query.endDate}T23:59:59.999Z`);
+
+    const query = { createdAt: { $gte: startDate, $lte: endDate } };
+
+    const filteredUser = await userModel
+      .find(query)
+      .select("fullName username email createdAt ");
+
+    res
+      .status(200)
+      .json({
+        message: `All users registered from ${startDate} to ${endDate} are `,
+        filteredUser,
+      });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Failed to retrieve filtered users" });
+  }
+};
 module.exports = {
   registerUser,
   loginUser,
@@ -278,4 +301,5 @@ module.exports = {
   updateUserProfileById,
   deleteUser,
   getUserById,
+  filterUserByDate,
 };
