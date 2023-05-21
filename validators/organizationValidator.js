@@ -6,7 +6,9 @@ const validateCreateOrg = [
     .notEmpty()
     .withMessage("Name is required")
     .isLength({ min: 2 })
-    .withMessage("Name should be at least 2 chars"),
+    .withMessage("Name should be at least 2 chars")
+    .matches(/^[a-zA-Z0-9 ]*$/)
+    .withMessage("Name cannot contain special characters"),
 
   // body("admin").notEmpty().withMessage("Admin must be provided!"),
 
