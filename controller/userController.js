@@ -18,7 +18,6 @@ const registerUser = async (req, res) => {
   //data from req
   const { fullName, username, email, userType, password, phoneNumber } =
     req.body;
-
   try {
     // Checking for existing user
     const existingUser = await userModel.findOne({
@@ -34,17 +33,22 @@ const registerUser = async (req, res) => {
     if (existingUsername) {
       return res.status(500).json({ error: "Username already exists" });
     }
-
     // Hashing Password with salt 10
     const hashedPassword = await bcrypt.hash(password, 10);
+    let avatarUrl = null;
 
+    // Check if file was uploaded
+    if (req.file) {
+      avatarUrl = `http://${req.headers.host}/${req.file.path}`;
+    }
+    const url = avatarUrl.split("/public").join("");
     const newUser = await userModel.create({
       fullName: fullName,
       email: email,
       username: username,
       password: hashedPassword,
       userType: userType,
-      avatar: req.file?.path,
+      avatar: url,
       phoneNumber: phoneNumber,
     });
 
@@ -207,11 +211,18 @@ const resetPassword = async (req, res) => {
 const updateUserProfileById = async (req, res) => {
   try {
     const { fullName, email, password, username, phoneNumber } = req.body;
+    let avatarUrl = null;
+
+    // Check if file was uploaded
+    if (req.file) {
+      avatarUrl = `http://${req.headers.host}/${req.file.path}`;
+    }
+    const url = avatarUrl.split("/public").join("");
 
     const update = {
       fullName: fullName,
       email: email,
-      avatar: req.file?.path,
+      avatar: url,
       username: username,
       phoneNumber: phoneNumber,
     };

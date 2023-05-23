@@ -14,6 +14,8 @@ app.use(morgan("dev"));
 // Database
 require("./config/database");
 app.use(express.json());
+
+app.use(express.static("public"));
 // cors
 app.use(cors());
 
@@ -72,6 +74,7 @@ app.use("/orgFeeder/api", routers);
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
+
 // Error handler
 const port = process.env.Port || 8000;
 if (process.env.NODE_ENV !== "test")

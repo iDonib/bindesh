@@ -7,11 +7,15 @@ const userModel = require("../model/user");
 const createOrganization = async (req, res) => {
   const { name, website, phoneNumber, address } = req.body;
   try {
+    let avatarUrl = null;
+    if (req.file) {
+      avatarUrl = `http://${req.headers.host}/${req.file.path}`;
+    }
+    const url = avatarUrl.split("/public").join("");
     const organization = new organizationModel({
       name,
       website,
-      logo: req.files?.[0]?.path,
-      photo: req.files?.[1]?.path,
+      photo: url,
       phoneNumber,
       address,
       createdBy: req.user.id,
@@ -36,15 +40,20 @@ const createOrganization = async (req, res) => {
 
 // update organization
 const updateOrganization = async (req, res) => {
+  const { name, website, phoneNumber, address } = req.body;
   try {
-    const { name, website, phoneNumber, address } = req.body;
+    let avatarUrl = null;
+    if (req.file) {
+      avatarUrl = `http://${req.headers.host}/${req.file.path}`;
+    }
+    const url = avatarUrl.split("/public").join("");
+    console.log(url);
     const organization = await organizationModel.findByIdAndUpdate(
       req.params.id,
       {
         name,
         website,
-        logo: req.files?.[0]?.path,
-        photo: req.files?.[1]?.path,
+        photo: url,
         phoneNumber,
         address,
       },
