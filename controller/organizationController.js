@@ -11,7 +11,7 @@ const createOrganization = async (req, res) => {
     if (req.file) {
       avatarUrl = `http://${req.headers.host}/${req.file.path}`;
     }
-    const url = avatarUrl.split("/public").join("");
+    const url = avatarUrl?.split("/public").join("");
     const organization = new organizationModel({
       name,
       website,
@@ -46,7 +46,7 @@ const updateOrganization = async (req, res) => {
     if (req.file) {
       avatarUrl = `http://${req.headers.host}/${req.file.path}`;
     }
-    const url = avatarUrl.split("/public").join("");
+    const url = avatarUrl?.split("/public").join("");
     console.log(url);
     const organization = await organizationModel.findByIdAndUpdate(
       req.params.id,

@@ -41,7 +41,7 @@ const registerUser = async (req, res) => {
     if (req.file) {
       avatarUrl = `http://${req.headers.host}/${req.file.path}`;
     }
-    const url = avatarUrl.split("/public").join("");
+    const url = avatarUrl?.split("/public").join("");
     const newUser = await userModel.create({
       fullName: fullName,
       email: email,
@@ -217,7 +217,7 @@ const updateUserProfileById = async (req, res) => {
     if (req.file) {
       avatarUrl = `http://${req.headers.host}/${req.file.path}`;
     }
-    const url = avatarUrl.split("/public").join("");
+    const url = avatarUrl?.split("/public").join("");
 
     const update = {
       fullName: fullName,
