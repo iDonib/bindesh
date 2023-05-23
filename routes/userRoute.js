@@ -25,7 +25,7 @@ const limiter = require("../helper/rateLimiter");
 const userRoute = express.Router();
 userRoute.post(
   "/register",
-  upload.single("file"),
+  upload.single("avatar"),
   validateRegisterUser,
   registerUser
 );
@@ -36,7 +36,7 @@ userRoute.post("/reset-password", validateResetPassword, resetPassword);
 userRoute.patch(
   "/update-user",
   isLoggedIn,
-  upload.single("file"),
+  upload.single("avatar"),
   validateUpdateUser,
   updateUserProfileById
 );

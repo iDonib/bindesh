@@ -16,7 +16,7 @@ const organizationRoute = express.Router();
 organizationRoute.post(
   "/create-organization",
   isLoggedIn,
-  upload.array("file"),
+  upload.single("photo"),
   validateCreateOrg,
   createOrganization
 );
@@ -25,7 +25,7 @@ organizationRoute.post(
 organizationRoute.patch(
   "/update-organization/:id",
   isLoggedIn,
-  upload.array("file"),
+  upload.single("photo"),
   updateOrganization
 );
 
