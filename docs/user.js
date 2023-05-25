@@ -193,39 +193,137 @@
  *         - newPassword
  *         - otp
  */
-
-// delete user
 /**
  * @swagger
- * /user/delete-user:
- *   delete:
- *     summary: Delete user account
+ * /user/update-user:
+ *   patch:
+ *     description: Update user
  *     tags:
  *       - Users
- *     security:
- *       - bearerAuth: []
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: authorization
+ *         in: header
+ *         type: string
+ *       - name: body
+ *         in: body
+ *         schema:
+ *           type: object
+ *           properties:
+ *             fullName:
+ *               example: any
+ *             email:
+ *               example: any
+ *             password:
+ *               example: any
+ *             username:
+ *               example: any
+ *             phoneNumber:
+ *               example: any
  *     responses:
  *       200:
- *         description: User deleted successfully
- *       400:
- *         description: Bad request. User not found
+ *         description: OK
+ *       404:
+ *         description: Not Found
  *       500:
- *         description: Internal server error
- */
-// get user by id
-/**
- * @swagger
+ *         description: Internal Server Error
+ *
+ * /user/delete-user:
+ *   delete:
+ *     description: Delete user
+ *     tags:
+ *       - Users
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: authorization
+ *         in: header
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: OK
+ *       400:
+ *         description: Bad Request
+ *       500:
+ *         description: Internal Server Error
+ *
  * /user/get-user-by-id:
  *   get:
  *     description: Get user by ID
+ *     tags:
+ *       - Users
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: authorization
+ *         in: header
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: OK
+ *       400:
+ *         description: Bad Request
+ *       500:
+ *         description: Internal Server Error
+ */
+
+/**
+ * @swagger
+ *  /user/filter-user:
+ *   get:
+ *     description: Filter users
+ *     tags:
+ *       - Users
  *     produces:
  *       - application/json
  *     parameters:
  *       - name: origin
  *         in: header
  *         type: string
- *       - name: authorization
+ *     responses:
+ *       200:
+ *         description: OK
+ *       404:
+ *         description: Not Found
+ *       500:
+ *         description: Internal Server Error
+ *
+ * /user/search-user:
+ *   get:
+ *     description: Search users by full name
+ *     tags:
+ *       - Users
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: origin
  *         in: header
+ *         type: string
+ *       - name: fullName
+ *         in: query
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: OK
+ *       404:
+ *         description: Not Found
+ *       500:
+ *         description: Internal Server Error
+ *
+ * /user/search-user-email:
+ *   get:
+ *     description: Search users by email
+ *     tags:
+ *       - Users
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: origin
+ *         in: header
+ *         type: string
+ *       - name: email
+ *         in: query
  *         type: string
  *     responses:
  *       200:
