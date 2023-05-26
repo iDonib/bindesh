@@ -9,13 +9,13 @@ const boardRoute = require("./routes/boardRoutes");
 const postRoute = require("./routes/postRoute");
 const commentRoute = require("./routes/commentRoute");
 const orgUserRoute = require("./routes/orgUserRoute");
-const limiter = require("./helper/rateLimiter");
+// const limiter = require("./helper/rateLimiter");
 
 routes.use("/admin", adminRoute);
 routes.use("/user", userRoute);
 routes.use("/organization", organizationRoute);
-routes.use("/board", limiter, boardRoute);
-routes.use("/post", limiter, postRoute);
-routes.use("/comment", limiter, commentRoute);
+routes.use("/board", boardRoute);
+routes.use("/post", postRoute);
+routes.use("/comment", commentRoute);
 routes.use("/orgUser", orgUserRoute);
 module.exports = routes;
