@@ -21,7 +21,7 @@ const {
   validateResetPassword,
   validateUpdateUser,
 } = require("../validators/userValidator");
-const limiter = require("../helper/rateLimiter");
+// const limiter = require("../helper/rateLimiter");
 const userRoute = express.Router();
 userRoute.post(
   "/register",
@@ -29,7 +29,7 @@ userRoute.post(
   validateRegisterUser,
   registerUser
 );
-userRoute.post("/login", limiter, validateLoginUser, loginUser);
+userRoute.post("/login", validateLoginUser, loginUser);
 userRoute.get("/emailVerify", emailVerify);
 userRoute.post("/forgot-password", forgotPassword);
 userRoute.post("/reset-password", validateResetPassword, resetPassword);
