@@ -333,3 +333,26 @@
  *       500:
  *         description: Internal Server Error
  */
+
+/**
+ * @swagger
+ * /user/get-user-by-id:
+ *  get:
+ *   description: Get user by ID
+ *  tags:
+ *   - Users
+ * produces:
+ *  - application/json
+ * parameters:
+ * - name: authorization
+ *  in: header
+ * type: string
+ * responses:
+ * 200:
+ * description: OK
+ * 400:
+ * description: Bad Request
+ * 500:
+ * description: Internal Server Error
+ *
+ */
